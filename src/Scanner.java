@@ -14,9 +14,27 @@ public class Scanner {
   static {
     keywords = new HashMap<>();
 
-    keywords.put("clase", TokenType.CLASE);
-    keywords.put("clase", TokenType.CLASE);
+    keywords.put("y", TokenType.Y);
+    keywords.put("class", TokenType.CLASS);
     // TODO: Add more keywords here
+    keywords.put("else", TokenType.ELSE);
+    keywords.put("false", TokenType.FALSE);
+    keywords.put("true", TokenType.TRUE);
+    keywords.put("for", TokenType.FOR);
+    keywords.put("new", TokenType.NEW);
+    keywords.put("null", TokenType.NULL);
+    keywords.put("or", TokenType.OR);
+    keywords.put("while", TokenType.WHILE);
+    keywords.put("case", TokenType.CASE);
+    keywords.put("switch", TokenType.SWITCH);
+    keywords.put("break", TokenType.BREAK);
+    keywords.put("super", TokenType.SUPER);
+    keywords.put("return", TokenType.RETURN);
+    keywords.put("true", TokenType.TRUE);
+    keywords.put("if", TokenType.IF);
+    keywords.put("do", TokenType.DO);
+    keywords.put("print", TokenType.PRINT);
+    keywords.put("this", TokenType.THIS);
   }
 
   Scanner(String source) {
