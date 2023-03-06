@@ -1,6 +1,6 @@
 public enum TokenType {
   //Palabras Reservadas
-  Y, 
+  AND,
   CLASS, 
   ELSE, 
   FALSE, 
@@ -20,6 +20,33 @@ public enum TokenType {
   PRINT,
   THIS,
   EOF,
+  VAR,
+  // Operators
+  PLUS,
+  MINUS,
+  STAR,
+  SLASH,
+  PERCENT,
+  // Comparators
+  EQUAL,
+  EQUAL_EQUAL,
+  GREATER,
+  GREATER_EQUAL,
+  LESS,
+  LESS_EQUAL,
+  // Logical
+  NOT,
+  NOT_EQUAL,
+  // Delimiters
+  LEFT_PAREN,
+  RIGHT_PAREN,
+  LEFT_BRACE,
+  RIGHT_BRACE,
+  LEFT_BRACKET,
+  RIGHT_BRACKET,
+  COMMA,
+  DOT,
+  SEMICOLON,
   
   INT,
   FLOAT,
