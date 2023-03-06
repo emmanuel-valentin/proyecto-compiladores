@@ -14,10 +14,10 @@ public class Main {
       System.exit(64);
     }
     else if (args.length == 1) {
-      // Run file with source code
+      runFile(args[0]);
     }
     else {
-      // Execute language prompt
+      runPrompt();
     }
   }
 
@@ -39,7 +39,7 @@ public class Main {
       if (line == null) {
         break;
       }
-      // Call run function
+      run(line);
       hasErrors = false;
     }
   }
@@ -51,5 +51,16 @@ public class Main {
     for(Token token : tokens) {
       System.out.println(token);
     }
+  }
+
+  public static void error(int numberLine, String message) {
+    report(numberLine, "", message);
+  }
+
+  private static void report(int numberLine, String where, String message) {
+    System.err.println(
+        "[line " + numberLine + "] Error" + where + ": " + message
+    );
+    hasErrors = true;
   }
 }
