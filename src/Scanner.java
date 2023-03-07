@@ -16,7 +16,6 @@ public class Scanner {
 
     keywords.put("and", TokenType.AND);
     keywords.put("class", TokenType.CLASS);
-    // TODO: Add more keywords here
     keywords.put("else", TokenType.ELSE);
     keywords.put("false", TokenType.FALSE);
     keywords.put("true", TokenType.TRUE);
@@ -58,6 +57,25 @@ public class Scanner {
     keywords.put("comma", TokenType.COMMA);
     keywords.put("dot", TokenType.DOT);
     keywords.put("semicolon", TokenType.SEMICOLON);
+    keywords.put("colon", TokenType.COLON);
+    keywords.put("exclamation", TokenType.EXCLAMATION);
+    keywords.put("question", TokenType.QUESTION);
+    keywords.put("dash", TokenType.DASH);
+    keywords.put("backslash", TokenType.BACKSLASH);
+    keywords.put("underscore", TokenType.UNDERSCORE);
+    keywords.put("apostrophe", TokenType.APOSTROPHE);
+    keywords.put("at", TokenType.AT);
+    keywords.put("ampersand", TokenType.AMPERSAND);
+    keywords.put("quotes", TokenType.QUOTES);
+    keywords.put("bar", TokenType.BAR); // | //
+    keywords.put("int", TokenType.INT);
+    keywords.put("float", TokenType.FLOAT);
+    keywords.put("double", TokenType.DOUBLE);
+    keywords.put("boolean", TokenType.BOOLEAN);
+    keywords.put("long", TokenType.LONG);
+    keywords.put("string", TokenType.STRING);
+    keywords.put("char", TokenType.CHAR);
+    keywords.put("byte", TokenType.BYTE);
   }
 
   Scanner(String source) {
