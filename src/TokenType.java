@@ -46,10 +46,23 @@ public enum TokenType {
   RIGHT_BRACKET,
   COMMA,
   DOT,
+  COLON,
   SEMICOLON,
-  
+  //Others
+  EXCLAMATION,
+  QUESTION,
+  DASH,
+  BACKSLASH
+  UNDERSCORE,
+  APOSTROPHE,
+  AT,
+  AMPERSAND,
+  QUOTES,
+  BAR,
+  //Tipo de dato
   INT,
   FLOAT,
+  DOUBLE,
   BOOLEAN,
   LONG,
   STRING,
