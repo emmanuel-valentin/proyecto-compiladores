@@ -52,7 +52,7 @@ public enum TokenType {
   EXCLAMATION,
   QUESTION,
   DASH,
-  BACKSLASH
+  BACKSLASH,
   UNDERSCORE,
   APOSTROPHE,
   AT,
