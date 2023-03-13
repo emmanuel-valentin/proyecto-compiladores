@@ -29,17 +29,20 @@ public class Automata {
   }
 
   public void addTransition(Integer currentState, Integer nextState, String transition) {
-    // Si ya existe la transición, entoces no la añade al estado indicado.
-    if (this.automata.get(currentState).containsKey(transition)) return;
-
     // Si el estado actual no existe, entonces lo crea y le añade la transición.
-    if (this.automata.get(currentState) == null) {
+    /* if (this.automata.get(currentState) == null) {
       Map<String, Integer> transitions = new HashMap<>();
       this.automata.put(currentState, transitions);
       return;
     }
+    // Si ya existe la transición, entoces no la añade al estado indicado.
+    else if (this.automata.get(currentState).containsKey(transition)) return;
     // Si el estado actual existe, entonces le añade la transición.
-    this.automata.get(currentState).put(transition, nextState);
+    this.automata.get(currentState).put(transition, nextState); */
+    Map<String, Integer> transitions = this.automata.get(currentState) == null ?
+        new HashMap<>() : this.automata.get(currentState);
+    transitions.put(transition, nextState);
+    this.automata.put(currentState, transitions);
   }
 
   public boolean isValid(String word) {
@@ -50,5 +53,10 @@ public class Automata {
       System.out.println(c);
     }
     return true;
+  }
+
+  @Override
+  public String toString() {
+    return this.automata.toString();
   }
 }

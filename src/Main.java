@@ -1,3 +1,5 @@
+import automata.Automata;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,7 +25,7 @@ public class Main {
 
   private static void runFile(String path) throws IOException {
     byte[] bytes = Files.readAllBytes(Paths.get(path));
-    // Call run function
+    run(new String(bytes));
     if (hasErrors) {
       System.exit(65);
     }
