@@ -8,8 +8,10 @@ public class AutomataDefinition {
    */
   public static Automata automata;
   static {
-    ArrayList<Integer> finalStates = new ArrayList<>();
     automata = new Automata();
+
+    automata.addFinalState(2);
+    automata.addFinalState(3);
 
     automata.addTransition(0, 1, "0");
     automata.addTransition(0, 3, "1");
@@ -31,9 +33,5 @@ public class AutomataDefinition {
 
     automata.addTransition(6, 6, "0");
     automata.addTransition(6, 6, "1");
-
-    finalStates.add(2);
-    finalStates.add(3);
-    automata.setFinalStates(finalStates);
   }
 }
