@@ -1,14 +1,15 @@
 package automata;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Automata {
   private Map<Integer, Map<String, Integer>> automata;
-  private Map<Integer, String> finalStates;
+  private ArrayList<Integer> finalStates;
   private Integer initialState;
 
-  public Automata(Map<Integer, String> finalStates, Integer initialState) {
+  public Automata(ArrayList<Integer> finalStates, Integer initialState) {
     this.automata = new HashMap<>();
     this.finalStates = finalStates;
     this.initialState = initialState;
@@ -16,11 +17,11 @@ public class Automata {
 
   public Automata() {
     this.automata = new HashMap<>();
-    this.finalStates = new HashMap<>();
+    this.finalStates = new ArrayList<>();
     this.initialState = 0;
   }
 
-  public void setFinalStates(Map<Integer, String> finalStates) {
+  public void setFinalStates(ArrayList<Integer> finalStates) {
     this.finalStates = finalStates;
   }
 
@@ -48,11 +49,10 @@ public class Automata {
   public boolean isValid(String word) {
     Integer currentState = this.initialState;
     for (char c : word.toCharArray()) {
-      // TODO: Itera cada caracter de la palabra a validar y verifica
-      //  si el último estado al que se mueve, es un estado final
-      System.out.println(c);
+      currentState = this.automata.get(currentState).get(String.valueOf(c));
+      System.out.println(currentState);
     }
-    return true;
+    return this.finalStates.contains(currentState);
   }
 
   @Override
