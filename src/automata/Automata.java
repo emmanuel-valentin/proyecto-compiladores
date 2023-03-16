@@ -26,7 +26,7 @@ public class Automata {
     this.automata.put(currentState, transitions);
   }
 
-  public boolean isValid(String word) {
+  public boolean evaluate(String word) {
     Integer currentState = this.initialState;
     for (char c : word.toCharArray()) {
       currentState = this.automata.get(currentState).get(String.valueOf(c));
