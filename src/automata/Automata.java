@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Automata {
-  private Map<Integer, Map<String, Integer>> automata;
-  private ArrayList<Integer> finalStates;
-  private Integer initialState;
+  private final Map<Integer, Map<String, Integer>> automata;
+  private final ArrayList<Integer> finalStates;
+  private final Integer initialState;
 
   public Automata() {
     this.automata = new HashMap<>();

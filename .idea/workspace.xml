@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8738400d-2f61-4533-ae0d-3582f5b795c6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/automata/Automata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/automata/Automata.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/automata/AutomataDefinition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/automata/AutomataDefinition.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +18,13 @@
         <option value="Enum" />
         <option value="Class" />
       </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
     </option>
   </component>
   <component name="MarkdownSettingsMigration">
@@ -75,7 +80,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="HEAD" />
+                        <option value="buffer-imp" />
                       </list>
                     </value>
                   </entry>
