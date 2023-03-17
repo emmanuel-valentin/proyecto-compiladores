@@ -12,7 +12,7 @@ public class Main {
 
   static boolean hasErrors = false;
   public static void main(String[] args) throws IOException {
-    if (args.length > 1) {
+    /* if (args.length > 1) {
       System.out.println("Correct use");
       System.exit(64);
     }
@@ -21,7 +21,8 @@ public class Main {
     }
     else {
       runPrompt();
-    }
+    } */
+    System.out.println(AutomataDefinition.automata.evaluate("ajdshfkjdf/*holá*/"));
   }
 
   private static void runFile(String path) throws IOException {
