@@ -44,6 +44,10 @@ public class Automata {
     return this.finalStates.contains(currentState.intValue());
   }
 
+  public StringBuffer getBuffer() {
+    return buffer;
+  }
+
   @Override
   public String toString() {
     return this.automata.toString();
