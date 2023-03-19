@@ -30,6 +30,7 @@ public enum TokenType {
   MULTIPLY,
   DIVIDE,
   NOT,
+  EQUAL,
   NOT_EQUAL,
   ASSIGN,
   LESS,
