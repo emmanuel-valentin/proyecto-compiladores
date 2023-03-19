@@ -14,42 +14,29 @@ public class Scanner {
   static {
     keywords = new HashMap<>();
 
-    keywords.put("and", TokenType.AND);
-    keywords.put("class", TokenType.CLASS);
     keywords.put("else", TokenType.ELSE);
-    keywords.put("false", TokenType.FALSE);
-    keywords.put("true", TokenType.TRUE);
+    keywords.put("class", TokenType.CLASS);
     keywords.put("for", TokenType.FOR);
-    keywords.put("new", TokenType.NEW);
-    keywords.put("null", TokenType.NULL);
-    keywords.put("or", TokenType.OR);
-    keywords.put("while", TokenType.WHILE);
-    keywords.put("case", TokenType.CASE);
-    keywords.put("switch", TokenType.SWITCH);
-    keywords.put("break", TokenType.BREAK);
-    keywords.put("super", TokenType.SUPER);
-    keywords.put("return", TokenType.RETURN);
-    keywords.put("true", TokenType.TRUE);
+    keywords.put("func", TokenType.FUNC);
     keywords.put("if", TokenType.IF);
-    keywords.put("do", TokenType.DO);
+    keywords.put("null", TokenType.NULL);
     keywords.put("print", TokenType.PRINT);
+    keywords.put("return", TokenType.RETURN);
+    keywords.put("super", TokenType.SUPER);
     keywords.put("this", TokenType.THIS);
-    keywords.put("int", TokenType.INT);
-    keywords.put("float", TokenType.FLOAT);
-    keywords.put("double", TokenType.DOUBLE);
-    keywords.put("boolean", TokenType.BOOLEAN);
-    keywords.put("long", TokenType.LONG);
-    keywords.put("string", TokenType.STRING);
-    keywords.put("char", TokenType.CHAR);
-    keywords.put("byte", TokenType.BYTE);
+    keywords.put("true", TokenType.TRUE);
+    keywords.put("false", TokenType.FALSE);
+    keywords.put("while", TokenType.WHILE);
+    keywords.put("var", TokenType.VAR);
   }
 
   Scanner(String source) {
     this.source = source;
   }
 
-  List<Token> scanTokens() {
+  public List<Token> scanTokens() {
     tokens.add(new Token(TokenType.EOF, "", null, numberLine));
+    System.out.println(this.source);
     return tokens;
   }
 }
