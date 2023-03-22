@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Scanner {
   private final String source;
@@ -33,56 +35,72 @@ public class Scanner {
     tokensWithLexeme.put(">", TokenType.GREATER);
     tokensWithLexeme.put(">=", TokenType.GREATER_EQUAL);
     tokensWithLexeme.put("==", TokenType.EQUAL);
-    tokensWithLexeme.put("!=", TokenType.NOT_EQUAL);
+    tokensWithLexeme.put("<>", TokenType.NOT_EQUAL);
     tokensWithLexeme.put("!", TokenType.NOT);
     tokensWithLexeme.put("=", TokenType.ASSIGN);
   }
 
   Scanner(String source) {
-    this.source = source;
+    this.source = source.trim();
+  }
+
+  private boolean isExpression(char character, String regex) {
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(String.valueOf(character));
+
+    return matcher.matches();
   }
 
   public List<Token> scanTokens() {
     int state = 0;
-    List<Integer> finalStates = List.of(1, 2, 3, 4, 5, 6, 7, 8);
+    List<Integer> finalStates = List.of(2, 3, 4, 5, 7, 8);
     StringBuffer buffer = new StringBuffer();
 
-    for (char character : this.source.toCharArray()) {
-      if (character == '\n') this.numberLine++;
-
+    for (int i = 0; i < this.source.length(); i++) {
+      char currentCharacter = this.source.charAt(i);
       switch (state) {
         case 0 -> {
-          if (character == '<') state = 1;
-          else if (character == '!') state = 3;
-          else if (character == '>') state = 5;
-          else if (character == '=') state = 7;
+          if (isExpression(currentCharacter, "<")) {
+            state = 1;
+          }
+          else if (isExpression(currentCharacter, "=")) {
+            state = 5;
+          }
+          else if (isExpression(currentCharacter, ">")) {
+            state = 6;
+          }
         }
         case 1 -> {
-          if (character == '=') state = 2;
+          if (isExpression(currentCharacter, "=")) {
+            state = 2;
+          }
+          else if (isExpression(currentCharacter, ">")) {
+            state = 3;
+          }
+          else {
+            state = 4;
+            currentCharacter = this.source.charAt(--i);
+          }
         }
-        case 3 -> {
-          if (character == '=') state = 4;
-
+        case 6 -> {
+          if (isExpression(currentCharacter, "=")) {
+            state = 7;
+          }
+          else {
+            state = 8;
+            currentCharacter = this.source.charAt(--i);
+          }
         }
-        case 5 -> {
-          if (character == '=') state = 6;
-        }
-        case 7 -> {
-          if (character == '=') state = 7;
-        }
+        default -> state = 0;
       }
 
+      buffer.append(currentCharacter);
       if (finalStates.contains(state)) {
-        buffer.append(character);
-        tokens.add(new Token(
-            tokensWithLexeme.get(buffer.toString()),
-            buffer.toString(),
-            null,
-            numberLine
-        ));
-
-        state = 0;
+        String lexeme = buffer.toString();
+        TokenType type = tokensWithLexeme.get(lexeme);
+        tokens.add(new Token(type, lexeme, null, numberLine));
         buffer.delete(0, buffer.length());
+        state = 0;
       }
     }
     tokens.add(new Token(TokenType.EOF, "", null, numberLine));
