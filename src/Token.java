@@ -13,6 +13,6 @@ public class Token {
 
   @Override
   public String toString() {
-    return type + " " + lexeme + " " + literal;
+    return "Line[" + numberLine + "]: " + type + " " + lexeme + " " + literal;
   }
 }
