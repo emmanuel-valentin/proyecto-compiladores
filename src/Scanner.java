@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Scanner {
@@ -10,6 +9,7 @@ public class Scanner {
 
   private static final Map<String, TokenType> keywords;
   private static final Map<String, TokenType> tokensWithLexeme;
+  StringBuilder buffer;
 
   static {
     // Set language keywords
@@ -35,75 +35,113 @@ public class Scanner {
     tokensWithLexeme.put(">", TokenType.GREATER);
     tokensWithLexeme.put(">=", TokenType.GREATER_EQUAL);
     tokensWithLexeme.put("==", TokenType.EQUAL);
-    tokensWithLexeme.put("<>", TokenType.NOT_EQUAL);
+    tokensWithLexeme.put("!=", TokenType.NOT_EQUAL);
     tokensWithLexeme.put("!", TokenType.NOT);
     tokensWithLexeme.put("=", TokenType.ASSIGN);
   }
 
   Scanner(String source) {
-    this.source = source.trim();
+    this.source = source;
+    this.buffer = new StringBuilder();
   }
 
-  private boolean isExpression(char character, String regex) {
-    Pattern pattern = Pattern.compile(regex);
-    Matcher matcher = pattern.matcher(String.valueOf(character));
-
-    return matcher.matches();
+  private boolean validateTransition(char character, String regex) {
+    return Pattern.compile(regex)
+        .matcher(String.valueOf(character))
+        .matches();
   }
 
   public List<Token> scanTokens() {
     int state = 0;
-    List<Integer> finalStates = List.of(2, 3, 4, 5, 7, 8);
-    StringBuffer buffer = new StringBuffer();
 
-    for (int i = 0; i < this.source.length(); i++) {
-      char currentCharacter = this.source.charAt(i);
+    for (int i = 0; i <= this.source.length(); i++) {
+      char currentCharacter = (i == this.source.length()) ?
+          '\0' : this.source.charAt(i);
+
+      numberLine = currentCharacter == '\n' ? ++numberLine : numberLine;
+
       switch (state) {
         case 0 -> {
-          if (isExpression(currentCharacter, "<")) {
+          if (validateTransition(currentCharacter, "<")) {
             state = 1;
+            buffer.append(currentCharacter);
           }
-          else if (isExpression(currentCharacter, "=")) {
-            state = 5;
+          else if (validateTransition(currentCharacter, "=")) {
+            state = 4;
+            buffer.append(currentCharacter);
           }
-          else if (isExpression(currentCharacter, ">")) {
-            state = 6;
+          else if (validateTransition(currentCharacter, ">")) {
+            state = 7;
+            buffer.append(currentCharacter);
+          }
+          else if (validateTransition(currentCharacter, "!")) {
+            state = 10;
+            buffer.append(currentCharacter);
           }
         }
         case 1 -> {
-          if (isExpression(currentCharacter, "=")) {
+          if (validateTransition(currentCharacter, "=")) {
             state = 2;
-          }
-          else if (isExpression(currentCharacter, ">")) {
-            state = 3;
+            buffer.append(currentCharacter);
           }
           else {
-            state = 4;
-            currentCharacter = this.source.charAt(--i);
+            state = 0;
+            i--;
+            addToken(buffer.toString());
           }
         }
-        case 6 -> {
-          if (isExpression(currentCharacter, "=")) {
-            state = 7;
+        case 2, 6, 8, 11 -> {
+          state = 0;
+          i--;
+          addToken(buffer.toString());
+        }
+        case 4 -> {
+          if (validateTransition(currentCharacter, "=")) {
+            state = 6;
+            buffer.append(currentCharacter);
           }
           else {
+            state = 0;
+            i--;
+            addToken(buffer.toString());
+          }
+        }
+        case 7 -> {
+          if (validateTransition(currentCharacter, "=")) {
             state = 8;
-            currentCharacter = this.source.charAt(--i);
+            buffer.append(currentCharacter);
+          }
+          else {
+            state = 0;
+            i--;
+            addToken(buffer.toString());
+          }
+        }
+        case 10 -> {
+          if (validateTransition(currentCharacter, "=")) {
+            state = 11;
+            buffer.append(currentCharacter);
+          }
+          else {
+            state = 0;
+            i--;
+            addToken(buffer.toString());
           }
         }
         default -> state = 0;
       }
-
-      buffer.append(currentCharacter);
-      if (finalStates.contains(state)) {
-        String lexeme = buffer.toString();
-        TokenType type = tokensWithLexeme.get(lexeme);
-        tokens.add(new Token(type, lexeme, null, numberLine));
-        buffer.delete(0, buffer.length());
-        state = 0;
-      }
     }
     tokens.add(new Token(TokenType.EOF, "", null, numberLine));
     return tokens;
+  }
+
+  private void addToken(String token) {
+    tokens.add(new Token(
+        tokensWithLexeme.get(token),
+        token,
+        null,
+        numberLine
+    ));
+    buffer.delete(0, buffer.length());
   }
 }
