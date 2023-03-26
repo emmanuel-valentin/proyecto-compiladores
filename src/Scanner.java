@@ -51,6 +51,8 @@ public class Scanner {
         .matches();
   }
 
+  // TODO: Implementar los demás autómatas. Todos los autómatas deben estar integrado en uno solo
+  // TODO: Evaluar palabras reservadas.
   public List<Token> scanTokens() {
     int state = 0;
 
@@ -62,6 +64,7 @@ public class Scanner {
 
       switch (state) {
         case 0 -> {
+          // Si existe la tansición, debemos agregar el caracter al buffer.
           if (validateTransition(currentCharacter, "<")) {
             state = 1;
             buffer.append(currentCharacter);
@@ -84,12 +87,16 @@ public class Scanner {
             state = 2;
             buffer.append(currentCharacter);
           }
+          // Estado de aceptación, pero no está declarado explícitamente
           else {
             state = 0;
             i--;
             addToken(buffer.toString());
           }
         }
+        // Estos son estados de aceptación, debemos hacer lo mismo en todos.
+        // Tal vez convenga refactorizar esto y moverlo a una función dado que
+        // se repite constantemente
         case 2, 6, 8, 11 -> {
           state = 0;
           i--;
@@ -100,6 +107,7 @@ public class Scanner {
             state = 6;
             buffer.append(currentCharacter);
           }
+          // Estado de aceptación
           else {
             state = 0;
             i--;
@@ -111,6 +119,7 @@ public class Scanner {
             state = 8;
             buffer.append(currentCharacter);
           }
+          // Estado de aceptación
           else {
             state = 0;
             i--;
@@ -122,6 +131,7 @@ public class Scanner {
             state = 11;
             buffer.append(currentCharacter);
           }
+          // Estado de aceptación
           else {
             state = 0;
             i--;
