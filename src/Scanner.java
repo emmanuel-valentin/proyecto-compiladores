@@ -167,4 +167,14 @@ public class Scanner {
     ));
     buffer.delete(0, buffer.length());
   }
+
+  private void addToken(String token, TokenType tokenType) {
+    tokens.add(new Token(
+        tokenType,
+        token,
+        null,
+        numberLine
+    ));
+    buffer.delete(0, buffer.length());
+  }
 }
