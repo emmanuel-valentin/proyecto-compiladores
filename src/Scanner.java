@@ -9,6 +9,7 @@ public class Scanner {
 
   private static final Map<String, TokenType> keywords;
   private static final Map<String, TokenType> tokensWithLexeme;
+  private static final Map<String, TokenType> operators;
   StringBuilder buffer;
 
   static {
@@ -38,6 +39,18 @@ public class Scanner {
     tokensWithLexeme.put("!=", TokenType.NOT_EQUAL);
     tokensWithLexeme.put("!", TokenType.NOT);
     tokensWithLexeme.put("=", TokenType.ASSIGN);
+    tokensWithLexeme.put("\\d",TokenType.NUMBER);
+    tokensWithLexeme.put("[a-zA-Z]",TokenType.STRING);
+
+
+    operators= new HashMap<>();
+    operators.put("+", TokenType.PLUS);
+    operators.put("-", TokenType.MINUS);
+    operators.put("*", TokenType.MULTIPLY);
+    operators.put("/",TokenType.DIVIDE);
+
+
+
   }
 
   Scanner(String source) {
