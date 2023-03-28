@@ -9,7 +9,7 @@ public class Scanner {
 
   private static final Map<String, TokenType> keywords;
   private static final Map<String, TokenType> tokensWithLexeme;
-  private static final Map<String, TokenType> operators;
+
   StringBuilder buffer;
 
   static {
@@ -39,18 +39,10 @@ public class Scanner {
     tokensWithLexeme.put("!=", TokenType.NOT_EQUAL);
     tokensWithLexeme.put("!", TokenType.NOT);
     tokensWithLexeme.put("=", TokenType.ASSIGN);
-    tokensWithLexeme.put("\\d",TokenType.NUMBER);
-    tokensWithLexeme.put("[a-zA-Z]",TokenType.STRING);
-
-
-    operators= new HashMap<>();
-    operators.put("+", TokenType.PLUS);
-    operators.put("-", TokenType.MINUS);
-    operators.put("*", TokenType.MULTIPLY);
-    operators.put("/",TokenType.DIVIDE);
-
-
-
+    tokensWithLexeme.put("+", TokenType.PLUS);
+    tokensWithLexeme.put("-", TokenType.MINUS);
+    tokensWithLexeme.put("*", TokenType.MULTIPLY);
+    tokensWithLexeme.put("/",TokenType.DIVIDE);
   }
 
   Scanner(String source) {
@@ -94,6 +86,27 @@ public class Scanner {
             state = 10;
             buffer.append(currentCharacter);
           }
+          else if(validateTransition(currentCharacter,"+")){
+            state = 12;
+            buffer.append(currentCharacter);
+          }
+          else if(validateTransition(currentCharacter, "-")){
+            state = 13;
+            buffer.append(currentCharacter);
+          }
+          else if (validateTransition(currentCharacter, "*")){
+            state = 14;
+            buffer.append(currentCharacter);
+          }
+          else if (validateTransition(currentCharacter, "/")){
+            state = 15;
+            buffer.append(currentCharacter);
+          }
+          else {
+            state = 0;
+            i--;
+            addToken(buffer.toString());
+        }
         }
         case 1 -> {
           if (validateTransition(currentCharacter, "=")) {
@@ -150,6 +163,12 @@ public class Scanner {
             i--;
             addToken(buffer.toString());
           }
+        }
+          case 12,13,14,15 ->{
+            if(validateTransition(currentCharacter, "=")){
+              state = 16;
+              buffer.append(currentCharacter);
+            }
         }
         default -> state = 0;
       }
