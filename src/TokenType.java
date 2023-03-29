@@ -15,6 +15,7 @@ public enum TokenType {
   WHILE,
   VAR,
   LOGICAL,
+  LETTER,
   NUMBER,
   STRING,
   IDENTIFIER,

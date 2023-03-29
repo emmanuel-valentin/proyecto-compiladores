@@ -102,30 +102,26 @@ public class Scanner {
             state = 14;
             buffer.append(currentCharacter);
           }
-          else if(validateTransition(currentCharacter, "[^\\n]")){
-            state = 28;
-            buffer.append(currentCharacter);
-          }
           else if (validateTransition(currentCharacter, "/")){
             state = 15;
             buffer.append(currentCharacter);
           }
           else if(validateTransition(currentCharacter,"\\d")){
             state = 20;
-            buffer.append(buffer);
+            buffer.append(currentCharacter);
           }
-        else if(validateTransition(currentCharacter, ".")){
-            state= 21;
-            buffer.append(buffer);
-        }
-        else if(validateTransition(currentCharacter,"\\d")){
-          state = 22;
-          // addToken(buffer.toString(), TokenType.NUMBER);
-          buffer.append(buffer);
-        }
+
         else if(validateTransition(currentCharacter, "[a-zA-Z]")){
           state = 25;
-          buffer.append(buffer);
+          buffer.append(currentCharacter);
+        }
+        else if(validateTransition(currentCharacter, ".")){
+            state= 21;
+            buffer.append(currentCharacter);
+        }
+        else if(validateTransition(currentCharacter, "[^\\n]")){
+          state = 28;
+          buffer.append(currentCharacter);
         }
         }
         case 1 -> {
@@ -186,7 +182,7 @@ public class Scanner {
         }
           case 12,13,14,15 ->{
             if(validateTransition(currentCharacter, "=")){
-              state = 0;
+              state = 16;
               buffer.append(currentCharacter);
             }
             else {
@@ -194,6 +190,28 @@ public class Scanner {
               i--;
               addToken(buffer.toString());
             }
+          }
+        case 20 ->{
+          if(validateTransition(currentCharacter, "=")){
+            state=21;
+            buffer.append(currentCharacter);
+          }
+          else{
+            state=0;
+            i--;
+            addToken(buffer.toString(),TokenType.NUMBER);
+          }
+        }
+        case 25 ->{
+          if(validateTransition(currentCharacter, "=")){
+            state=26;
+            buffer.append(currentCharacter);
+          }
+          else{
+            state=0;
+            i--;
+            addToken(buffer.toString(),TokenType.LETTER);
+          }
         }
         default -> state = 0;
       }
