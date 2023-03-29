@@ -55,6 +55,14 @@ public class Scanner {
     tokensWithLexeme.put("(", TokenType.LEFT_PAREN);
     tokensWithLexeme.put(")",TokenType.RIGHT_PAREN);
     tokensWithLexeme.put(",", TokenType.COMMA);
+    tokensWithLexeme.put(";", TokenType.SEMICOLON);
+    tokensWithLexeme.put("?",TokenType.INTERROGATIVE);
+    tokensWithLexeme.put("¿",TokenType.INTERROGATIVE);
+    tokensWithLexeme.put("%",TokenType.PORCENT);
+    tokensWithLexeme.put("_",TokenType.UNDERSCORE);
+    tokensWithLexeme.put(".", TokenType.DOT);
+    tokensWithLexeme.put("[",TokenType.RIGHT_CORCH);
+    tokensWithLexeme.put("]",TokenType.LEFT_CORCH);
   }
 
   Scanner(String source) {
@@ -99,39 +107,27 @@ public class Scanner {
             buffer.append(currentCharacter);
           }
           else if(validateTransition(currentCharacter,"\\+")){
-            state = 12;
+            state = 30;
             buffer.append(currentCharacter);
           }
           else if(validateTransition(currentCharacter, "-")){
-            state = 13;
+            state = 33;
             buffer.append(currentCharacter);
           }
           else if (validateTransition(currentCharacter, "\\*")){
-            state = 14;
+            state = 35;
             buffer.append(currentCharacter);
           }
+          else if (validateTransition(currentCharacter, "\\/")){
+            state = 38;
+            buffer.append(currentCharacter);
+          }          
           else if (validateTransition(currentCharacter, "\\|")){
-            state = 15;
+            state = 40;
             buffer.append(currentCharacter);
           }
           else if (validateTransition(currentCharacter, "\\&")){
-            state = 16;
-            buffer.append(currentCharacter);
-          }
-          else if (validateTransition(currentCharacter, "\\(")){
-            state = 17;
-            buffer.append(currentCharacter);
-          }
-          else if (validateTransition(currentCharacter, "\\)")){
-            state = 18;
-            buffer.append(currentCharacter);
-          }
-          else if (validateTransition(currentCharacter, "\\{")){
-            state = 19;
-            buffer.append(currentCharacter);
-          }
-          else if (validateTransition(currentCharacter, "\\}")){
-            state = 20;
+            state = 43;
             buffer.append(currentCharacter);
           }
           else if(validateTransition(currentCharacter,"\\d")){
@@ -140,6 +136,14 @@ public class Scanner {
           }
         else if(validateTransition(currentCharacter, "[a-zA-Z]")){
           state = 26;
+          buffer.append(currentCharacter);
+        }
+        else if (validateTransition(currentCharacter, "\\(|\\)|\\{|\\}|[|]")){
+          state = 18;
+          buffer.append(currentCharacter);
+        }
+      else if(validateTransition(currentCharacter, ".|\\;|\\,|\\?|\\¿|\\%|\\_")){
+          state = 20;
           buffer.append(currentCharacter);
         }
         else if(validateTransition(currentCharacter, ".")){
@@ -207,12 +211,12 @@ public class Scanner {
             addToken(buffer.toString());
           }
         }
-          case 12,13,14,15,16,17,18,19,20 ->{
+          case 20 ->{
             if(validateTransition(currentCharacter, "=")){
               state = 21;
               buffer.append(currentCharacter);
             }
-            else {
+            else{
               state = 0;
               i--;
               addToken(buffer.toString());
@@ -248,8 +252,93 @@ public class Scanner {
           else{
           state = 0;
           i--;
-          addTokenwithkeyword(buffer.toString(),TokenType.IDENTIFIER);
+          addToken(buffer.toString(), TokenType.IDENTIFIER);
+         // addTokenwithkeyword(buffer.toString();
         }
+          }
+          case 30->{
+            if(validateTransition(currentCharacter, "=")){
+            state=31;
+            buffer.append(currentCharacter);
+          }
+          else{
+            state=0;
+            i--;
+            addToken(buffer.toString());
+          }
+        } 
+        case 33->{
+          if(validateTransition(currentCharacter, "=")){
+          state=34;
+          buffer.append(currentCharacter);
+        }
+        else{
+          state=0;
+          i--;
+          addToken(buffer.toString());
+        }
+      }
+      case 35->{
+        if(validateTransition(currentCharacter, "=")){
+        state=36;
+        buffer.append(currentCharacter);
+      }
+      else{
+        state=0;
+        i--;
+        addToken(buffer.toString());
+      }
+    }
+    case 38->{
+      if(validateTransition(currentCharacter, "=")){
+      state=39;
+      buffer.append(currentCharacter);
+    }
+    else{
+      state=0;
+      i--;
+      addToken(buffer.toString());
+    }
+  }
+          case 31,34,36,39 ->{
+            if(validateTransition(currentCharacter, "=")){
+              state = 40;
+              buffer.append(currentCharacter);
+            }
+            else {
+              state = 0;
+              i--;
+              addToken(buffer.toString());
+            }
+          }
+          case 40 ->{
+            if(validateTransition(currentCharacter, "=")){
+              state = 41;
+              buffer.append(currentCharacter);
+            }
+            else{
+              state=0;
+              i--;
+              addToken(buffer.toString());
+            }
+          }
+          case 43 ->{
+            if(validateTransition(currentCharacter, "=")){
+              state = 44;
+              buffer.append(currentCharacter);
+            }
+            else{
+              state=0;
+              i--;
+              addToken(buffer.toString());
+            }
+          }
+          case 41,44 ->{
+            if(validateTransition(currentCharacter, "=")){
+              state = 0;
+              i--;
+              addToken(buffer.toString());
+            }
           }
         case 28 ->{
           if(validateTransition(currentCharacter, "=")){
@@ -278,16 +367,16 @@ public class Scanner {
     ));
     buffer.delete(0, buffer.length());
   }
-  private void addTokenwithkeyword(String lexeme,TokenType tokenType) {
+ /*  private void addTokenwithkeyword(TokenType keywords {
     tokens.add(new Token(
-        keywords.getOrDefault(lexeme,TokenType.IDENTIFIER),
-        lexeme,
+        keywords.getOrDefault(TokenType),
+        token,
         null,
         numberLine
     ));
     buffer.delete(0, buffer.length());
   }
-
+*/
   private void addToken(String lexeme, TokenType tokenType) {
     tokens.add(new Token(
         tokenType,
