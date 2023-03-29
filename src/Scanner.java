@@ -62,7 +62,31 @@ public class Scanner {
           else if (currentCharacter == '!') {
             state = 4;
             lexeme.append(currentCharacter);
-          } 
+          }
+          else if (currentCharacter == '(') {
+            state = 5;
+            lexeme.append(currentCharacter);
+          }
+          else if (currentCharacter == ')') {
+            state = 6;
+            lexeme.append(currentCharacter);
+          }
+          else if (currentCharacter == '[') {
+            state = 7;
+            lexeme.append(currentCharacter);
+          }
+          else if (currentCharacter == ']') {
+            state = 8;
+            lexeme.append(currentCharacter);
+          }
+          else if (currentCharacter == '{') {
+            state = 9;
+            lexeme.append(currentCharacter);
+          }
+          else if (currentCharacter == '}') {
+            state = 10;
+            lexeme.append(currentCharacter);
+          }
           else if (currentCharacter == '\0');
           else {
             throw new RuntimeException("Unable to parse: " + currentCharacter);
@@ -115,7 +139,42 @@ public class Scanner {
           }
           break;
         // -------------------------------------------------------------------------------------------------------------
-
+        // Paréntesis y Corchetes y llaves
+        case 5:
+          i--; state = 0; addToken(TokenType.LEFT_PAREN, lexeme.toString());
+          break;
+        case 6:
+          i--; state = 0; addToken(TokenType.RIGHT_PAREN, lexeme.toString());
+          break;
+        case 7:
+          i--; state = 0; addToken(TokenType.LEFT_CORCH, lexeme.toString());
+          break;
+        case 8:
+          i--; state = 0; addToken(TokenType.RIGHT_CORCH, lexeme.toString());
+          break;
+        case 9:
+          i--; state = 0; addToken(TokenType.LEFT_BRACE, lexeme.toString());
+          break;
+        case 10:
+          i--; state = 0; addToken(TokenType.RIGHT_BRACE, lexeme.toString());
+          break;
+        // Strings
+        case 11:
+          if (currentCharacter != '"') {
+            lexeme.append(currentCharacter);
+          }
+          else {
+            state = 0;
+            lexeme.append(currentCharacter);
+            addToken(
+                TokenType.STRING,
+                lexeme.toString(),
+                lexeme.substring(1, lexeme.length() - 1)
+            );
+          }
+          break;
+        default:
+          throw new RuntimeException("Unable to parse: " + currentCharacter);
       }
     }
     tokens.add(new Token(TokenType.EOF, "", null, numberLine));
