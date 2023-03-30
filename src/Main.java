@@ -46,10 +46,14 @@ public class Main {
 
   private static void run(String source) {
     Scanner scanner = new Scanner(source);
-    List<Token> tokens = scanner.scanTokens();
+    try {
+      List<Token> tokens = scanner.scanTokens();
 
-    for(Token token : tokens) {
-      System.out.println(token);
+      for(Token token : tokens) {
+        System.out.println(token);
+      }
+    } catch (RuntimeException e) {
+      report(Scanner.numberLine, "", e.getMessage());
     }
   }
 
