@@ -87,6 +87,10 @@ public class Scanner {
             state = 10;
             lexeme.append(currentCharacter);
           }
+          else if (currentCharacter == '"') {
+            state = 11;
+            lexeme.append(currentCharacter);
+          }
           else if (currentCharacter >= '0' && currentCharacter <= '9') {
             state = 12;
             lexeme.append(currentCharacter);
@@ -403,8 +407,8 @@ public class Scanner {
         case 26:
           if (
               currentCharacter >= 'a' && currentCharacter <= 'z' ||
-              currentCharacter >= 'A' && currentCharacter <= 'Z' ||
-              currentCharacter >= '0' && currentCharacter <= '9'
+                  currentCharacter >= 'A' && currentCharacter <= 'Z' ||
+                  currentCharacter >= '0' && currentCharacter <= '9'
           ) {
             state = 25;
             lexeme.append(currentCharacter);
