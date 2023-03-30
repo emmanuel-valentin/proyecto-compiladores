@@ -111,6 +111,44 @@ public class Scanner {
             state = 22;
             lexeme.append(currentCharacter);
           }
+          else if (currentCharacter == '&') {
+            state = 23;
+            lexeme.append(currentCharacter);
+          }
+          else if (currentCharacter == '|') {
+            state = 24;
+            lexeme.append(currentCharacter);
+          }
+          else if (
+              currentCharacter >= 'a' && currentCharacter <= 'z' ||
+              currentCharacter >= 'A' && currentCharacter <= 'Z'
+          ) {
+            state = 25;
+            lexeme.append(currentCharacter);
+          }
+          else if (currentCharacter == '_') {
+            state = 26;
+            lexeme.append(currentCharacter);
+          }
+          else if (
+              currentCharacter == ' ' || currentCharacter == '\t' || currentCharacter == '\n'
+              || currentCharacter == '\r'
+          ) {
+            state = 27;
+            lexeme.append(currentCharacter);
+          }
+          else if (currentCharacter == ';') {
+            lexeme.append(currentCharacter);
+            addToken(TokenType.SEMICOLON, lexeme.toString());
+          }
+          else if (currentCharacter == ',') {
+            lexeme.append(currentCharacter);
+            addToken(TokenType.COMMA, lexeme.toString());
+          }
+          else if (currentCharacter == '.') {
+            lexeme.append(currentCharacter);
+            addToken(TokenType.DOT, lexeme.toString());
+          }
           else if (currentCharacter == '\0');
           else {
             throw new RuntimeException("Unable to parse: " + currentCharacter);
@@ -182,7 +220,6 @@ public class Scanner {
         case 10:
           i--; state = 0; addToken(TokenType.RIGHT_BRACE, lexeme.toString());
           break;
-        // Strings
         // Strings
         case 11:
           if (currentCharacter != '"') {
@@ -326,6 +363,97 @@ public class Scanner {
           else {
             i--; addToken(TokenType.MOD, lexeme.toString());
           }
+          break;
+        //Logical operators
+        case 23:
+        if (currentCharacter == '&') {
+          state = 0;
+          lexeme.append(currentCharacter);
+          addToken(TokenType.AND, lexeme.toString());
+        }
+        else {
+          throw new RuntimeException("Unable to convert: " + lexeme);
+        }
+        break;
+        case 24:
+          if (currentCharacter == '|') {
+            state = 0;
+            lexeme.append(currentCharacter);
+            addToken(TokenType.OR, lexeme.toString());
+          }
+          else {
+            throw new RuntimeException("Unable to convert: " + lexeme);
+          }
+          break;
+        // Identifiers
+        case 25:
+          if (
+              currentCharacter >= 'a' && currentCharacter <= 'z' ||
+              currentCharacter >= 'A' && currentCharacter <= 'Z' ||
+              currentCharacter >= '0' && currentCharacter <= '9' ||
+              currentCharacter == '_'
+          ) {
+            lexeme.append(currentCharacter);
+          }
+          else {
+            i--; state = 0;
+            addToken(TokenType.IDENTIFIER, lexeme.toString());
+          }
+          break;
+        case 26:
+          if (
+              currentCharacter >= 'a' && currentCharacter <= 'z' ||
+              currentCharacter >= 'A' && currentCharacter <= 'Z' ||
+              currentCharacter >= '0' && currentCharacter <= '9'
+          ) {
+            state = 25;
+            lexeme.append(currentCharacter);
+          }
+          else if (currentCharacter == '_') {
+            lexeme.append(currentCharacter);
+          }
+          else {
+            throw new RuntimeException("Unable to parse: " + lexeme);
+          }
+          break;
+        // Delimiters
+        case 27:
+          if (
+              currentCharacter == ' ' || currentCharacter == '\t' || currentCharacter == '\n'
+              || currentCharacter == '\r'
+          ) {
+            lexeme.append(currentCharacter);
+          }
+          else {
+            i--; state = 0;
+            lexeme.delete(0, lexeme.length());
+          }
+          break;
+        // Comments
+        case 28:
+          if (currentCharacter != '\n') {
+            lexeme.append(currentCharacter);
+          }
+          else {
+            i--; state = 0; lexeme.delete(0, lexeme.length());
+          }
+          break;
+        case 29:
+          if (currentCharacter == '*') {
+            state = 30;
+          }
+          else {
+            lexeme.append(currentCharacter);
+          }
+          break;
+        case 30:
+          if (currentCharacter == '/') {
+            state = 31;
+          }
+          lexeme.append(currentCharacter);
+          break;
+        case 31:
+          i--; state = 0; lexeme.delete(0, lexeme.length());
           break;
         default:
           throw new RuntimeException("Unable to parse: " + currentCharacter);
