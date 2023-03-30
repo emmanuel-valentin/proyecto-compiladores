@@ -43,6 +43,8 @@ public enum TokenType {
   MULTIPLY_EQUAL,
   DIVIDE,
   DIVIDE_EQUAL,
+  MOD,
+  MOD_EQUAL,
   NOT,
   EQUAL,
   NOT_EQUAL,
