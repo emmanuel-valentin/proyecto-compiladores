@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.regex.Pattern;
 
 public class Scanner {
   private final String source;
@@ -47,115 +46,116 @@ public class Scanner {
 
       switch (state) {
         case 0:
-          if (currentCharacter == '<') {
-            state = 1;
-            lexeme.append(currentCharacter);
-          } 
-          else if (currentCharacter == '=') {
-            state = 2;
-            lexeme.append(currentCharacter);
-          } 
-          else if (currentCharacter == '>') {
-            state = 3;
-            lexeme.append(currentCharacter);
-          } 
-          else if (currentCharacter == '!') {
-            state = 4;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '(') {
-            state = 5;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == ')') {
-            state = 6;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '[') {
-            state = 7;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == ']') {
-            state = 8;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '{') {
-            state = 9;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '}') {
-            state = 10;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '"') {
-            state = 11;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter >= '0' && currentCharacter <= '9') {
-            state = 12;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '+') {
-            state = 18;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '-') {
-            state = 19;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '*') {
-            state = 20;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '/') {
-            state = 21;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '%') {
-            state = 22;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '&') {
-            state = 23;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '|') {
-            state = 24;
-            lexeme.append(currentCharacter);
-          }
-          else if (
-              currentCharacter >= 'a' && currentCharacter <= 'z' ||
-              currentCharacter >= 'A' && currentCharacter <= 'Z'
-          ) {
-            state = 25;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '_') {
-            state = 26;
-            lexeme.append(currentCharacter);
-          }
-          else if (
-              currentCharacter == ' ' || currentCharacter == '\t' || currentCharacter == '\n'
-              || currentCharacter == '\r'
-          ) {
-            state = 27;
-            lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == ';') {
-            lexeme.append(currentCharacter);
-            addToken(TokenType.SEMICOLON, lexeme.toString());
-          }
-          else if (currentCharacter == ',') {
-            lexeme.append(currentCharacter);
-            addToken(TokenType.COMMA, lexeme.toString());
-          }
-          else if (currentCharacter == '.') {
-            lexeme.append(currentCharacter);
-            addToken(TokenType.DOT, lexeme.toString());
-          }
-          else if (currentCharacter == '\0');
-          else {
-            throw new RuntimeException("Unable to parse: " + currentCharacter);
+          if (currentCharacter != '\0') {
+            if (currentCharacter == '<') {
+              state = 1;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '=') {
+              state = 2;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '>') {
+              state = 3;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '!') {
+              state = 4;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '(') {
+              state = 5;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == ')') {
+              state = 6;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '[') {
+              state = 7;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == ']') {
+              state = 8;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '{') {
+              state = 9;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '}') {
+              state = 10;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '"') {
+              state = 11;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter >= '0' && currentCharacter <= '9') {
+              state = 12;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '+') {
+              state = 18;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '-') {
+              state = 19;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '*') {
+              state = 20;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '/') {
+              state = 21;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '%') {
+              state = 22;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '&') {
+              state = 23;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '|') {
+              state = 24;
+              lexeme.append(currentCharacter);
+            }
+            else if (
+                currentCharacter >= 'a' && currentCharacter <= 'z' ||
+                    currentCharacter >= 'A' && currentCharacter <= 'Z'
+            ) {
+              state = 25;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == '_') {
+              state = 26;
+              lexeme.append(currentCharacter);
+            }
+            else if (
+                currentCharacter == ' ' || currentCharacter == '\t' || currentCharacter == '\n'
+                    || currentCharacter == '\r'
+            ) {
+              state = 27;
+              lexeme.append(currentCharacter);
+            }
+            else if (currentCharacter == ';') {
+              lexeme.append(currentCharacter);
+              addToken(TokenType.SEMICOLON, lexeme.toString());
+            }
+            else if (currentCharacter == ',') {
+              lexeme.append(currentCharacter);
+              addToken(TokenType.COMMA, lexeme.toString());
+            }
+            else if (currentCharacter == '.') {
+              lexeme.append(currentCharacter);
+              addToken(TokenType.DOT, lexeme.toString());
+            }
+            else {
+              throw new RuntimeException("Unable to parse: " + currentCharacter);
+            }
           }
           break;
         // Operadores relacionales
