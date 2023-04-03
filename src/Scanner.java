@@ -226,8 +226,11 @@ public class Scanner {
           break;
         // Strings
         case 11:
-          if (currentCharacter != '"') {
+          if (currentCharacter != '"' && currentCharacter != '\0') {
             lexeme.append(currentCharacter);
+          }
+          else if (currentCharacter == '\0') {
+            throw new RuntimeException("Unable to parse: " + lexeme);
           }
           else {
             state = 0;
