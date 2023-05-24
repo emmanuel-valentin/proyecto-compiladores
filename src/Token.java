@@ -12,6 +12,15 @@ public class Token {
   }
 
   @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Token)) {
+      return false;
+    }
+
+    return this.type == ((Token) obj).type;
+  }
+
+  @Override
   public String toString() {
     return "Line[" + numberLine + "]: " + type + " " + lexeme + " " + literal;
   }
