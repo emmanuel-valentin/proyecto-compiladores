@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Main {
 
-  static boolean hasErrors = false;
+  static boolean existsErr = false;
   public static void main(String[] args) throws IOException {
     if (args.length > 1) {
       System.out.println("Correct use");
@@ -24,7 +24,7 @@ public class Main {
   private static void runFile(String path) throws IOException {
     byte[] bytes = Files.readAllBytes(Paths.get(path));
     run(new String(bytes));
-    if (hasErrors) {
+    if (existsErr) {
       System.exit(65);
     }
   }
@@ -40,7 +40,7 @@ public class Main {
         break;
       }
       run(line);
-      hasErrors = false;
+      existsErr = false;
     }
   }
 
@@ -65,6 +65,6 @@ public class Main {
     System.err.println(
         "[line " + numberLine + "] Error" + where + ": " + message
     );
-    hasErrors = true;
+    existsErr = true;
   }
 }
