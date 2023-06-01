@@ -4,11 +4,22 @@ public class Token {
   final Object literal;
   final int numberLine;
 
-  Token(TokenType type, String lexeme, Object literal, int numberLine) {
+  public Token(TokenType type, String lexeme, Object literal, int numberLine) {
     this.type = type;
     this.lexeme = lexeme;
     this.literal = literal;
     this.numberLine = numberLine;
+  }
+
+  public Token(TokenType type, String lexeme) {
+    this.type = type;
+    this.lexeme = lexeme;
+    this.literal = null;
+    this.numberLine = 0;
+  }
+
+  public int getNumberLine() {
+    return this.numberLine;
   }
 
   @Override
