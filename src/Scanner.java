@@ -91,7 +91,7 @@ public class Scanner {
               state = 11;
               lexeme.append(currentCharacter);
             }
-            else if (currentCharacter >= '0' && currentCharacter <= '9') {
+            else if (Character.isDigit(currentCharacter)) {
               state = 12;
               lexeme.append(currentCharacter);
             }
@@ -123,10 +123,7 @@ public class Scanner {
               state = 24;
               lexeme.append(currentCharacter);
             }
-            else if (
-                currentCharacter >= 'a' && currentCharacter <= 'z' ||
-                    currentCharacter >= 'A' && currentCharacter <= 'Z'
-            ) {
+            else if (Character.isLetter(currentCharacter)) {
               state = 25;
               lexeme.append(currentCharacter);
             }
@@ -134,10 +131,7 @@ public class Scanner {
               state = 26;
               lexeme.append(currentCharacter);
             }
-            else if (
-                currentCharacter == ' ' || currentCharacter == '\t' || currentCharacter == '\n'
-                    || currentCharacter == '\r'
-            ) {
+            else if (Character.isSpaceChar(currentCharacter) || Character.isISOControl(currentCharacter)) {
               state = 27;
               lexeme.append(currentCharacter);
             }
