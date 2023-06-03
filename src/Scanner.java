@@ -27,7 +27,8 @@ public class Scanner {
     keywords.put("true", TokenType.TRUE);
     keywords.put("false", TokenType.FALSE);
     keywords.put("while", TokenType.WHILE);
-    keywords.put("var", TokenType.VAR);
+    keywords.put("from", TokenType.FROM);
+    keywords.put("select", TokenType.SELECT);
   }
 
   Scanner(String source) {

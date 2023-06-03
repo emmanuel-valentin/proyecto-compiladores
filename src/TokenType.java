@@ -47,4 +47,8 @@ public enum TokenType {
   LESS_EQUAL,
   GREATER,
   GREATER_EQUAL,
+  FROM,
+  SELECT,
+  ASTERISK,
+  DISTINCT,
 }

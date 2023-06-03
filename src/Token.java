@@ -35,4 +35,8 @@ public class Token {
   public String toString() {
     return "Line[" + numberLine + "]: " + type + " " + lexeme + " " + literal;
   }
+
+public Object getType() {
+    return null;
+}
 }
