@@ -1,3 +1,4 @@
+import java.text.Normalizer.Form;
 import java.util.List;
 
 public class Parser {
@@ -55,8 +56,10 @@ public class Parser {
 
   private Token lookahead;
 
-  // Servirá para ir obteniendo cada token de la lista de tokens generada en el análisis léxico
   private int i;
+
+  // Servirá para ir obteniendo cada token de la lista de tokens generada en el análisis léxico
+  
 
   public Parser(List<Token> tokens) {
     this.tokens = tokens;
@@ -65,11 +68,12 @@ public class Parser {
   public void parse() {
     i = 0;
     lookahead = tokens.get(i);
+    startProduction();
     // Ejecutar la primera producción: Por cada no terminal crear una función (Ver código SQL)
     // Por cada terminal ejecutar la función match
   }
 
-  private void match(Token terminal) {
+  private void match(Token  terminal) {
     if(Main.errors) return;
     if (lookahead == terminal) {
       i++;
@@ -77,7 +81,141 @@ public class Parser {
     }
     else {
       Main.errors = true;
-      Main.error(lookahead.getNumberLine(), "Error en la posición " +  i + ", se esperaba un " + terminal.type);
+      Main.error(lookahead.getNumberLine(), "Error en la posición " +  i + ", se esperaba un " + identifier2.type);
     }
   }
+
+private void startProduction(){
+  //empezar la gramatica de automata start->Q'
+  Q();
 }
+
+/*private void Q() {
+  if(lookahead.getType() == keywords.SELECT){
+    //Q->SELECT D from T
+    match(keywords.SELECT);
+    D();
+    match(keywords.FROM);
+    T();
+  }
+  else{
+    //errores
+  }
+  boolean error = true;
+  System.out.println("Error en la posición " + lookahead.literal + ". Se esperaba la palabra reservada SELECT.");
+  }
+   */
+
+private void D() {
+  if (lookahead.getType() == TokenType.DISTINCT) {
+    // D -> distinct P
+    match(TokenType.DISTINCT);
+    P();
+  } else if (lookahead.getType() == TokenType.IDENTIFIER) {
+    // D -> P
+    P();
+  } else {
+    //errores
+  }
+}
+
+private void P() {
+  if (lookahead.getType() == TokenType.ASTERISK) {
+    // P -> *
+    match(TokenType.ASTERISK);
+  } else if (lookahead.getType() == TokenType.IDENTIFIER) {
+    // P -> A
+    A();
+  } else {
+    // error sintáctico
+  }
+}
+
+
+private void match(TokenType asterisk) {
+}
+
+private void A() {
+  if (lookahead.getType() == TokenType.IDENTIFIER) {
+    // A -> A2A1
+    A2();
+    A1();
+  } else {
+    //error sintáctico
+  }
+}
+
+private void A2() {
+  if (lookahead.getType() == TokenType.IDENTIFIER) {
+    // A2 -> idA3
+    match(TokenType.IDENTIFIER);
+    A3();
+  } else {
+    //  error sintáctico
+  }
+}
+
+private void A3() {
+  if (lookahead.getType() == TokenType.DOT) {
+    // A3 -> .id
+    match(TokenType.DOT);
+    match(TokenType.IDENTIFIER);
+  } else {
+    // error sintáctico
+  }
+}
+
+private void T() {
+  if (lookahead.getType() == TokenType.IDENTIFIER) {
+    // T -> T2T1
+    T2();
+    T1();
+  } else {
+    //  error sintáctico
+  }
+}
+
+private void T2() {
+  if (lookahead.getType() == TokenType.IDENTIFIER) {
+    // T2 -> idT3
+    match(TokenType.IDENTIFIER);
+    T3();
+  } else {
+    //  error sintáctico
+  }
+}
+
+private void T3() {
+  if (lookahead.getType() == TokenType.IDENTIFIER) {
+    // T3 -> id
+    match(TokenType.IDENTIFIER);
+  } else {
+    // error sintáctico
+  }
+}
+private void A1() {
+  if (lookahead.getType() == TokenType.COMMA) {
+    // A1 -> , A
+    match(TokenType.COMMA);
+    A();
+  } else {
+    // error sintáctico
+  }
+}
+
+private void T1() {
+  if (lookahead.getType() == TokenType.COMMA) {
+    // T1 -> , T
+    match(TokenType.COMMA);
+    T();
+  } else {
+    // T1 -> ε 
+  }
+}
+}
+
+
+
+
+
+
