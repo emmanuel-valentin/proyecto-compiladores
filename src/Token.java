@@ -1,8 +1,8 @@
 public class Token {
-  final TokenType type;
-  final String lexeme;
-  final Object literal;
-  final int numberLine;
+  final private TokenType type;
+  final private String lexeme;
+  final private Object literal;
+  final private int numberLine;
 
   public Token(TokenType type, String lexeme, Object literal, int numberLine) {
     this.type = type;
@@ -22,6 +22,10 @@ public class Token {
     return this.numberLine;
   }
 
+  public TokenType getType() {
+    return type;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (!(obj instanceof Token)) {
@@ -35,8 +39,4 @@ public class Token {
   public String toString() {
     return "Line[" + numberLine + "]: " + type + " " + lexeme + " " + literal;
   }
-
-public Object getType() {
-    return null;
-}
 }
