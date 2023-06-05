@@ -106,7 +106,21 @@ public class Parser {
     }
   }
 
-  private void classDecl() {}
+  private void classDecl() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(CLASS)) {
+      match(CLASS);
+      match(IDENTIFIER);
+      classInher();
+      match(LEFT_BRACE);
+      functions();
+      match(RIGHT_BRACE);
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected keyword class");
+    }
+  }
 
   private void classInher() {}
 
