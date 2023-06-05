@@ -131,8 +131,17 @@ public class Parser {
     }
   }
 
-  private void funcDec() {}
+  private void funcDecl() {
+    if (Main.errors) return;
 
+    if (lookahead.equals(FUNC)) {
+      match(FUNC);
+      function();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected keyword fun");
+    }
+  }
   private void varDecl() {}
 
   private void varInit() {}
