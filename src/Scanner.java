@@ -29,6 +29,9 @@ public class Scanner {
     keywords.put("while", TokenType.WHILE);
     keywords.put("from", TokenType.FROM);
     keywords.put("select", TokenType.SELECT);
+    keywords.put("or", TokenType.OR);
+    keywords.put("and", TokenType.AND);
+    keywords.put("var", TokenType.VAR);
   }
 
   Scanner(String source) {
@@ -116,14 +119,6 @@ public class Scanner {
               state = 22;
               lexeme.append(currentCharacter);
             }
-            else if (currentCharacter == '&') {
-              state = 23;
-              lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '|') {
-              state = 24;
-              lexeme.append(currentCharacter);
-            }
             else if (Character.isLetter(currentCharacter)) {
               state = 25;
               lexeme.append(currentCharacter);
@@ -132,7 +127,8 @@ public class Scanner {
               state = 26;
               lexeme.append(currentCharacter);
             }
-            else if (Character.isSpaceChar(currentCharacter) || Character.isISOControl(currentCharacter)) {
+            else if (currentCharacter == ' ' || currentCharacter == '\t' || currentCharacter == '\n'
+                || currentCharacter == '\r') {
               state = 27;
               lexeme.append(currentCharacter);
             }
@@ -149,7 +145,7 @@ public class Scanner {
               addToken(TokenType.DOT, lexeme.toString());
             }
             else {
-              throw new RuntimeException("Unable to parse: " + currentCharacter);
+              Main.error(numberLine,"Unable to parse: " + currentCharacter);
             }
           }
           break;
@@ -160,7 +156,7 @@ public class Scanner {
           if (currentCharacter == '=') {
             lexeme.append(currentCharacter);
             addToken(TokenType.LESS_EQUAL, lexeme.toString());
-          } 
+          }
           else {
             i--;
             addToken(TokenType.LESS, lexeme.toString());
@@ -171,7 +167,7 @@ public class Scanner {
           if (currentCharacter == '=') {
             lexeme.append(currentCharacter);
             addToken(TokenType.EQUAL, lexeme.toString());
-          } 
+          }
           else {
             i--;
             addToken(TokenType.ASSIGN, lexeme.toString());
@@ -182,7 +178,7 @@ public class Scanner {
           if (currentCharacter == '=') {
             lexeme.append(currentCharacter);
             addToken(TokenType.GREATER_EQUAL, lexeme.toString());
-          } 
+          }
           else {
             i--;
             addToken(TokenType.GREATER, lexeme.toString());
@@ -193,7 +189,7 @@ public class Scanner {
           if (currentCharacter == '=') {
             lexeme.append(currentCharacter);
             addToken(TokenType.NOT_EQUAL, lexeme.toString());
-          } 
+          }
           else {
             i--;
             addToken(TokenType.NOT, lexeme.toString());
@@ -225,7 +221,7 @@ public class Scanner {
             lexeme.append(currentCharacter);
           }
           else if (currentCharacter == '\0') {
-            throw new RuntimeException("Unable to parse: " + lexeme);
+            Main.error(numberLine,"Unable to parse: " + lexeme);
           }
           else {
             state = 0;
@@ -261,7 +257,7 @@ public class Scanner {
             lexeme.append(currentCharacter);
           }
           else {
-            throw new RuntimeException("Unable to parse: " + lexeme);
+            Main.error(numberLine,"Unable to parse: " + lexeme);
           }
           break;
         case 14:
@@ -287,7 +283,7 @@ public class Scanner {
             lexeme.append(currentCharacter);
           }
           else {
-            throw new RuntimeException("Unable to parse: " + lexeme);
+            Main.error(numberLine,"Unable to parse: " + lexeme);
           }
           break;
         case 16:
@@ -366,34 +362,13 @@ public class Scanner {
             i--; addToken(TokenType.MOD, lexeme.toString());
           }
           break;
-        //Logical operators
-        case 23:
-        if (currentCharacter == '&') {
-          state = 0;
-          lexeme.append(currentCharacter);
-          addToken(TokenType.AND, lexeme.toString());
-        }
-        else {
-          throw new RuntimeException("Unable to convert: " + lexeme);
-        }
-        break;
-        case 24:
-          if (currentCharacter == '|') {
-            state = 0;
-            lexeme.append(currentCharacter);
-            addToken(TokenType.OR, lexeme.toString());
-          }
-          else {
-            throw new RuntimeException("Unable to convert: " + lexeme);
-          }
-          break;
         // Identifiers
         case 25:
           if (
               currentCharacter >= 'a' && currentCharacter <= 'z' ||
-              currentCharacter >= 'A' && currentCharacter <= 'Z' ||
-              currentCharacter >= '0' && currentCharacter <= '9' ||
-              currentCharacter == '_'
+                  currentCharacter >= 'A' && currentCharacter <= 'Z' ||
+                  currentCharacter >= '0' && currentCharacter <= '9' ||
+                  currentCharacter == '_'
           ) {
             lexeme.append(currentCharacter);
           }
@@ -415,14 +390,14 @@ public class Scanner {
             lexeme.append(currentCharacter);
           }
           else {
-            throw new RuntimeException("Unable to parse: " + lexeme);
+            Main.error(numberLine,"Unable to parse: " + lexeme);
           }
           break;
         // Delimiters
         case 27:
           if (
               currentCharacter == ' ' || currentCharacter == '\t' || currentCharacter == '\n'
-              || currentCharacter == '\r'
+                  || currentCharacter == '\r'
           ) {
             lexeme.append(currentCharacter);
           }
@@ -458,7 +433,7 @@ public class Scanner {
           i--; state = 0; lexeme.delete(0, lexeme.length());
           break;
         default:
-          throw new RuntimeException("Unable to parse: " + currentCharacter);
+          Main.error(numberLine,"Unable to parse: " + currentCharacter);
       }
     }
     tokens.add(new Token(TokenType.EOF, "", null, numberLine));
