@@ -75,20 +75,36 @@ public class Parser {
       Main.error(lookahead.getNumberLine(), String.format(
           "Error en la posición %s. No se esperaba el token %s",
           lookahead.getNumberLine(),
-          lookahead.getType()
-      ));
-    }
-    else if (!Main.errors && lookahead.equals(EOF)) {
-      System.out.println("Consulta válida");
+          lookahead.getType()));
     }
   }
-
-
   private void program() {
     declaration();
   }
 
-  private void declaration() {}
+  private void declaration() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(CLASS)) {
+      classDecl();
+      declaration();
+    } else if (lookahead.equals(FUNC)) {
+      funcDecl();
+      declaration();
+    } else if (lookahead.equals(VAR)) {
+      varDecl();
+      declaration();
+    } else if (
+        lookahead.equals(MINUS) || lookahead.equals(PLUS) || lookahead.equals(FOR) || lookahead.equals(IF)
+        || lookahead.equals(PRINT) || lookahead.equals(RETURN) || lookahead.equals(WHILE)
+        || lookahead.equals(LEFT_BRACE) || lookahead.equals(NOT) || lookahead.equals(TRUE) || lookahead.equals(FALSE)
+        || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING)
+        || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)
+    ) {
+      statement();
+      declaration();
+    }
+  }
 
   private void classDecl() {}
 
