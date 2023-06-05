@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Main {
 
-  static boolean errors = false;
+  public static boolean errors = false;
   public static void main(String[] args) throws IOException {
     if (args.length > 1) {
       System.out.println("Correct use");
@@ -46,15 +46,11 @@ public class Main {
 
   private static void run(String source) {
     Scanner scanner = new Scanner(source);
-    try {
-      List<Token> tokens = scanner.scanTokens();
+    List<Token> tokens = scanner.scanTokens();
+    Parser parser = new Parser(tokens);
 
-      for(Token token : tokens) {
-        System.out.println(token);
-      }
-    } catch (RuntimeException e) {
-      error(Scanner.numberLine, e.getMessage());
-    }
+    parser.parse();
+    // for (Token token : tokens) System.out.println(token);
   }
 
   public static void error(int numberLine, String message) {
