@@ -166,7 +166,34 @@ public class Parser {
     }
   }
 
-  private void statement() {}
+  private void statement() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      exprSTMT();
+    }
+    else if (lookahead.equals(FOR)) {
+      forSTMT();
+    }
+    else if (lookahead.equals(IF)) {
+      ifSTMT();
+    }
+    else if (lookahead.equals(PRINT)) {
+      printSTMT();
+    }
+    else if (lookahead.equals(RETURN)) {
+      returnSTMT();
+    }
+    else if (lookahead.equals(WHILE)) {
+      whileSTMT();
+    }
+    else if (lookahead.equals(LEFT_BRACE)) {
+      block();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected statement");
+    }
+  }
 
   private void exprSTMT() {}
 
