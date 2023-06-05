@@ -1,17 +1,36 @@
-class Main {
+class Main < System {
     // Hola
     /*
      * Comentario
      * multilinea
      */
     func main() {
-        if (2 > 2) {
-            print("2 mayor que 2");
+        if (!true or (4 < iden) and (3 == 1)) {
+            print "2 mayor que 2";
         }
         else if (3 <= 3.1) {
-            print("3.1 menor que 3.1")
+            print "3.1 menor que 3.1";
             var exp = "Hola";
-            var exp = 2.0;
+            exp = 2.0;
         }
+
+        if (true) {
+        	print "True";
+        }
+
+        if (!false) {
+        	1 = 0;
+        }
+    }
+
+    func ciclos(index) {
+    	index = 0;
+    	while (index < 10) {
+    		print i;
+    	}
+
+    	for (var j = 0; j < 19; j = j + 1) {
+    		print i;
+    	}
     }
 }
