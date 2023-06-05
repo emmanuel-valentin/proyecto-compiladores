@@ -142,9 +142,29 @@ public class Parser {
       Main.error(lookahead.getNumberLine(), "Expected keyword fun");
     }
   }
-  private void varDecl() {}
 
-  private void varInit() {}
+  private void varDecl() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(VAR)) {
+      match(VAR);
+      match(IDENTIFIER);
+      varInit();
+      match(SEMICOLON);
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected keyword var");
+    }
+  }
+
+  private void varInit() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(ASSIGN)) {
+      match(ASSIGN);
+      expression();
+    }
+  }
 
   private void statement() {}
 
