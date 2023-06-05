@@ -1,4 +1,3 @@
-import java.text.Normalizer.Form;
 import java.util.List;
 
 public class Parser {
@@ -60,13 +59,11 @@ public class Parser {
 
     program();
 
-    // Ejecutar la primera producción: Por cada no terminal crear una función (Ver código SQL)
-    // Por cada terminal ejecutar la función match
     if (!Main.errors && !lookahead.equals(EOF)) {
-      Main.error(lookahead.getNumberLine(), String.format(
-          "Error en la posición %s. No se esperaba el token %s",
-          lookahead.getNumberLine(),
-          lookahead.getType()));
+      Main.error(lookahead.getNumberLine(), "Unexpected token " + lookahead.getLexeme());
+    }
+    else if (!Main.errors && lookahead.equals(EOF)) {
+      System.out.println("Parsing finished successfully");
     }
   }
   private void program() {
@@ -596,15 +593,6 @@ public class Parser {
       match(DOT);
       match(IDENTIFIER);
       call2();
-    }
-  }
-
-  private void callOpc() {
-    if (Main.errors) return;
-
-    if (lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
-      call();
-      match(DOT);
     }
   }
 
