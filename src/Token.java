@@ -26,6 +26,10 @@ public class Token {
     return type;
   }
 
+  public String getLexeme() {
+    return lexeme;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (!(obj instanceof Token)) {
