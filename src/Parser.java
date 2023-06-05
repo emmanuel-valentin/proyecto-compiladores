@@ -206,13 +206,62 @@ public class Parser {
   }
 
 
-  private void forSTMT() {}
+  private void forSTMT() {
+    if (Main.errors) return;
 
-  private void forSTMT1() {}
+    if (lookahead.equals(FOR)) {
+      match(FOR);
+      match(LEFT_PAREN);
+      forSTMT1();
+      forSTMT2();
+      forSTMT3();
+      match(RIGHT_PAREN);
+      statement();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected keyword for");
+    }
+  }
 
-  private void forSTMT2() {}
+  private void forSTMT1() {
+    if (Main.errors) return;
 
-  private void forSTMT3() {}
+    if (lookahead.equals(VAR)) {
+      varDecl();
+    }
+    else if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      exprSTMT();
+    }
+    else if (lookahead.equals(SEMICOLON)) {
+      match(SEMICOLON);
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected declaration or expression or \";\"");
+    }
+  }
+
+  private void forSTMT2() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      expression();
+      match(SEMICOLON);
+    }
+    else if (lookahead.equals(SEMICOLON)) {
+      match(SEMICOLON);
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected expression");
+    }
+  }
+
+  private void forSTMT3() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      expression();
+    }
+  }
 
   private void ifSTMT() {}
 
