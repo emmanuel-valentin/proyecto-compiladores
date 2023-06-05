@@ -279,83 +279,453 @@ public class Parser {
     }
   }
 
-  private void printSTMT() {}
+  private void printSTMT() {
+    if (Main.errors) return;
 
-  private void returnSTMT() {}
+    if (lookahead.equals(PRINT)) {
+      match(PRINT);
+      expression();
+      match(SEMICOLON);
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected keyword print");
+    }
+  }
 
-  private void returnSTMTOpc() {}
+  private void returnSTMT() {
+    if (Main.errors) return;
 
-  private void whileSTMT() {}
+    if (lookahead.equals(RETURN)) {
+      match(RETURN);
+      returnSTMTOpc();
+      match(SEMICOLON);
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected keyword return");
+    }
+  }
 
-  private void block() {}
+  private void returnSTMTOpc() {
+    if (Main.errors) return;
 
-  private void blockDecl() {}
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      expression();
+    }
+  }
 
-  private void expression() {}
+  private void whileSTMT() {
+    if (Main.errors) return;
 
-  private void assigment() {}
+    if (lookahead.equals(WHILE)) {
+      match(WHILE);
+      match(LEFT_PAREN);
+      expression();
+      match(RIGHT_PAREN);
+      statement();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected keyword while");
+    }
+  }
 
-  private void assigmentOpc() {}
+  private void block() {
+    if (Main.errors) return;
 
-  private void logicOr() {}
+    if (lookahead.equals(LEFT_BRACE)) {
+      match(LEFT_BRACE);
+      blockDecl();
+      match(RIGHT_BRACE);
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected \"{\"");
+    }
+  }
 
-  private void logicOr2() {}
+  private void blockDecl() {
+    if (Main.errors) return;
 
-  private void logicAnd() {}
+    if (
+        lookahead.equals(CLASS)
+            || lookahead.equals(FUNC)
+            || lookahead.equals(VAR)
+            || lookahead.equals(MINUS)
+            || lookahead.equals(PLUS)
+            || lookahead.equals(FOR)
+            || lookahead.equals(IF)
+            || lookahead.equals(PRINT) || lookahead.equals(RETURN) || lookahead.equals(WHILE)
+            || lookahead.equals(LEFT_BRACE) || lookahead.equals(NOT) || lookahead.equals(TRUE) || lookahead.equals(FALSE)
+            || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING)
+            || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)
+    ) {
+      declaration();
+      blockDecl();
+    }
+  }
 
-  private void logicAnd2() {}
+  private void expression() {
+    if (Main.errors) return;
 
-  private void equality() {}
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      assignment();
+    }
+  }
 
-  private void equality2() {}
+  private void assignment() {
+    if (Main.errors) return;
 
-  private void comparison() {}
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      logicOr();
+      assignmentOpc();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
+    }
+  }
 
-  private void comparison2() {}
+  private void assignmentOpc() {
+    if (Main.errors) return;
 
-  private void term() {}
+    if (lookahead.equals(ASSIGN)) {
+      match(ASSIGN);
+      expression();
+    }
+  }
 
-  private void term2() {}
+  private void logicOr() {
+    if (Main.errors) return;
 
-  private void factor() {}
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      logicAnd();
+      logicOr2();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
+    }
+  }
 
-  private void factor2() {}
+  private void logicOr2() {
+    if (Main.errors) return;
 
-  private void unary() {}
+    if (lookahead.equals(OR)) {
+      match(OR);
+      logicAnd();
+      logicOr2();
+    }
+  }
 
-  private void call() {}
+  private void logicAnd() {
+    if (Main.errors) return;
 
-  private void call2() {}
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      equality();
+      logicAnd2();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
+    }
+  }
 
-  private void callOpc() {}
+  private void logicAnd2() {
+    if (Main.errors) return;
 
-  private void primary() {}
+    if (lookahead.equals(AND)) {
+      match(AND);
+      equality();
+      logicAnd2();
+    }
+  }
 
-  private void function() {}
+  private void equality() {
+    if (Main.errors) return;
 
-  private void functions() {}
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      comparison();
+      equality2();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
+    }
+  }
 
-  private void parametersOpc() {}
+  private void equality2() {
+    if (Main.errors) return;
 
-  private void parameters() {}
+    if (lookahead.equals(NOT_EQUAL)) {
+      match(NOT_EQUAL);
+      comparison();
+      equality2();
+    }
+    else if (lookahead.equals(EQUAL)) {
+      match(EQUAL);
+      comparison();
+      equality2();
+    }
+  }
 
-  private void parameters2() {}
+  private void comparison() {
+    if (Main.errors) return;
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      term();
+      comparison2();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
+    }
+  }
 
-  private void argumentsOpc() {}
+  private void comparison2() {
+    if (Main.errors) return;
 
-  private void arguments() {}
+    if (lookahead.equals(GREATER)) {
+      match(GREATER);
+      term();
+      comparison2();
+    }
+    else if (lookahead.equals(GREATER_EQUAL)) {
+      match(GREATER_EQUAL);
+      term();
+      comparison2();
+    }
+    else if (lookahead.equals(LESS)) {
+      match(LESS);
+      term();
+      comparison2();
+    }
+    else if (lookahead.equals(LESS_EQUAL)) {
+      match(LESS_EQUAL);
+      term();
+      comparison2();
+    }
+  }
 
-  private void arguments2() {}
+  private void term() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      factor();
+      term2();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
+    }
+  }
+
+  private void term2() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(MINUS)) {
+      match(MINUS);
+      factor();
+      term2();
+    }
+    else if (lookahead.equals(PLUS)) {
+      match(PLUS);
+      factor();
+      term2();
+    }
+  }
+
+  private void factor() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      unary();
+      factor2();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
+    }
+  }
+
+  private void factor2() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(DIVIDE)) {
+      match(DIVIDE);
+      unary();
+      factor2();
+    }
+    else if (lookahead.equals(MULTIPLY)) {
+      match(MULTIPLY);
+      unary();
+      factor2();
+    }
+  }
+
+  private void unary() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(NOT)) {
+      match(NOT);
+      unary();
+    }
+    else if (lookahead.equals(MINUS)) {
+      match(MINUS);
+      unary();
+    }
+    else if (lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      call();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
+    }
+  }
+
+  private void call() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      primary();
+      call2();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
+    }
+  }
+
+  private void call2() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(LEFT_PAREN)) {
+      match(LEFT_PAREN);
+      argumentsOpc();
+      match(RIGHT_PAREN);
+      call2();
+    }
+    else if (lookahead.equals(DOT)) {
+      match(DOT);
+      match(IDENTIFIER);
+      call2();
+    }
+  }
+
+  private void callOpc() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      call();
+      match(DOT);
+    }
+  }
+
+  private void primary() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(TRUE)) match(TRUE);
+    else if (lookahead.equals(FALSE)) match(FALSE);
+    else if (lookahead.equals(NULL)) match(NULL);
+    else if (lookahead.equals(THIS)) match(THIS);
+    else if (lookahead.equals(NUMBER)) match(NUMBER);
+    else if (lookahead.equals(STRING)) match(STRING);
+    else if (lookahead.equals(IDENTIFIER)) match(IDENTIFIER);
+    else if (lookahead.equals(LEFT_PAREN)) {
+      match(LEFT_PAREN);
+      expression();
+      match(RIGHT_PAREN);
+    }
+    else if (lookahead.equals(SUPER)) {
+      match(SUPER);
+      match(DOT);
+      match(IDENTIFIER);
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
+    }
+  }
+
+  private void function() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(IDENTIFIER)) {
+      match(IDENTIFIER);
+      match(LEFT_PAREN);
+      parametersOpc();
+      match(RIGHT_PAREN);
+      block();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected identifier");
+    }
+  }
+
+  private void functions() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(FUNC)) {
+      funcDecl();
+      functions();
+    }
+  }
+
+  private void parametersOpc() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(IDENTIFIER)) {
+      parameters();
+    }
+  }
+
+  private void parameters() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(IDENTIFIER)) {
+      match(IDENTIFIER);
+      parameters2();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected identifier");
+    }
+  }
+
+  private void parameters2() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(COMMA)) {
+      match(COMMA);
+      match(IDENTIFIER);
+      parameters2();
+    }
+  }
+
+  private void argumentsOpc() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      arguments();
+    }
+  }
+
+  private void arguments() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      expression();
+      arguments2();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected arguments");
+    }
+  }
+
+  private void arguments2() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(COMMA)) {
+      match(COMMA);
+      expression();
+      arguments2();
+    }
+  }
 
   private void match(Token terminal) {
     if(Main.errors) return;
-    if (lookahead == terminal) {
+    if (lookahead.equals(terminal)) {
       i++;
       lookahead = tokens.get(i);
     }
     else {
       Main.errors = true;
-      Main.error(lookahead.getNumberLine(), "Error en la posición " +  i + ", se esperaba un " + terminal);
+      Main.error(lookahead.getNumberLine(), "Expected " + terminal.getLexeme());
     }
   }
 }
