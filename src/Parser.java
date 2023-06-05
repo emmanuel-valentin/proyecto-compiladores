@@ -254,9 +254,30 @@ public class Parser {
     }
   }
 
-  private void ifSTMT() {}
+  private void ifSTMT() {
+    if (Main.errors) return;
 
-  private void elseStatement() {}
+    if (lookahead.equals(IF)) {
+      match(IF);
+      match(LEFT_PAREN);
+      expression();
+      match(RIGHT_PAREN);
+      statement();
+      elseStatement();
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected keyword if");
+    }
+  }
+
+  private void elseStatement() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(ELSE)) {
+      match(ELSE);
+      statement();
+    }
+  }
 
   private void printSTMT() {}
 
