@@ -195,7 +195,16 @@ public class Parser {
     }
   }
 
-  private void exprSTMT() {}
+  private void exprSTMT() {
+    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+      expression();
+      match(SEMICOLON);
+    }
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected expression");
+    }
+  }
+
 
   private void forSTMT() {}
 
