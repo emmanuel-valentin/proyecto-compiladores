@@ -122,7 +122,14 @@ public class Parser {
     }
   }
 
-  private void classInher() {}
+  private void classInher() {
+    if (Main.errors) return;
+
+    if (lookahead.equals(LESS)) {
+      match(LESS);
+      match(IDENTIFIER);
+    }
+  }
 
   private void funcDec() {}
 
