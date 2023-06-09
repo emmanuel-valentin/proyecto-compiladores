@@ -1,7 +1,6 @@
 import java.util.List;
 
 public class Parser {
-
   private final List<Token> tokens;
   private final Token EOF = new Token(TokenType.EOF, "");
   private final Token CLASS = new Token(TokenType.CLASS, "class");
@@ -46,9 +45,6 @@ public class Parser {
   private Token lookahead;
   private int i;
 
-  // Servirá para ir obteniendo cada token de la lista de tokens generada en el análisis léxico
-  
-
   public Parser(List<Token> tokens) {
     this.tokens = tokens;
   }
@@ -61,17 +57,42 @@ public class Parser {
 
     if (!Main.errors && !lookahead.equals(EOF)) {
       Main.error(lookahead.getNumberLine(), "Unexpected token " + lookahead.getLexeme());
-    }
-    else if (!Main.errors && lookahead.equals(EOF)) {
+    } else if (!Main.errors && lookahead.equals(EOF)) {
       System.out.println("Parsing finished successfully");
     }
   }
+
   private void program() {
-    declaration();
+    if (lookahead.equals(CLASS) ||
+        lookahead.equals(FUNC) ||
+        lookahead.equals(VAR) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(PLUS) ||
+        lookahead.equals(FOR) ||
+        lookahead.equals(IF) ||
+        lookahead.equals(PRINT) ||
+        lookahead.equals(RETURN) ||
+        lookahead.equals(WHILE) ||
+        lookahead.equals(LEFT_BRACE) ||
+        lookahead.equals(NOT) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER))
+      declaration();
+    else {
+      Main.error(lookahead.getNumberLine(), "Expected expression");
+    }
   }
 
   private void declaration() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(CLASS)) {
       classDecl();
@@ -82,20 +103,32 @@ public class Parser {
     } else if (lookahead.equals(VAR)) {
       varDecl();
       declaration();
-    } else if (
-        lookahead.equals(MINUS) || lookahead.equals(PLUS) || lookahead.equals(FOR) || lookahead.equals(IF)
-        || lookahead.equals(PRINT) || lookahead.equals(RETURN) || lookahead.equals(WHILE)
-        || lookahead.equals(LEFT_BRACE) || lookahead.equals(NOT) || lookahead.equals(TRUE) || lookahead.equals(FALSE)
-        || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING)
-        || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)
-    ) {
+    } else if (lookahead.equals(MINUS) ||
+        lookahead.equals(PLUS) ||
+        lookahead.equals(FOR) ||
+        lookahead.equals(IF) ||
+        lookahead.equals(PRINT) ||
+        lookahead.equals(RETURN) ||
+        lookahead.equals(WHILE) ||
+        lookahead.equals(LEFT_BRACE) ||
+        lookahead.equals(NOT) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       statement();
       declaration();
     }
   }
 
   private void classDecl() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(CLASS)) {
       match(CLASS);
@@ -104,14 +137,14 @@ public class Parser {
       match(LEFT_BRACE);
       functions();
       match(RIGHT_BRACE);
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected keyword class");
     }
   }
 
   private void classInher() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(LESS)) {
       match(LESS);
@@ -120,33 +153,34 @@ public class Parser {
   }
 
   private void funcDecl() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(FUNC)) {
       match(FUNC);
       function();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected keyword fun");
     }
   }
 
   private void varDecl() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(VAR)) {
       match(VAR);
       match(IDENTIFIER);
       varInit();
       match(SEMICOLON);
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected keyword var");
     }
   }
 
   private void varInit() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(ASSIGN)) {
       match(ASSIGN);
@@ -155,47 +189,60 @@ public class Parser {
   }
 
   private void statement() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       exprSTMT();
-    }
-    else if (lookahead.equals(FOR)) {
+    } else if (lookahead.equals(FOR)) {
       forSTMT();
-    }
-    else if (lookahead.equals(IF)) {
+    } else if (lookahead.equals(IF)) {
       ifSTMT();
-    }
-    else if (lookahead.equals(PRINT)) {
+    } else if (lookahead.equals(PRINT)) {
       printSTMT();
-    }
-    else if (lookahead.equals(RETURN)) {
+    } else if (lookahead.equals(RETURN)) {
       returnSTMT();
-    }
-    else if (lookahead.equals(WHILE)) {
+    } else if (lookahead.equals(WHILE)) {
       whileSTMT();
-    }
-    else if (lookahead.equals(LEFT_BRACE)) {
+    } else if (lookahead.equals(LEFT_BRACE)) {
       block();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected statement");
     }
   }
 
   private void exprSTMT() {
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       expression();
       match(SEMICOLON);
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected expression");
     }
   }
 
-
   private void forSTMT() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(FOR)) {
       match(FOR);
@@ -205,54 +252,82 @@ public class Parser {
       forSTMT3();
       match(RIGHT_PAREN);
       statement();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected keyword for");
     }
   }
 
   private void forSTMT1() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(VAR)) {
       varDecl();
-    }
-    else if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    } else if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       exprSTMT();
-    }
-    else if (lookahead.equals(SEMICOLON)) {
+    } else if (lookahead.equals(SEMICOLON)) {
       match(SEMICOLON);
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected declaration or expression or \";\"");
     }
   }
 
   private void forSTMT2() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       expression();
       match(SEMICOLON);
-    }
-    else if (lookahead.equals(SEMICOLON)) {
+    } else if (lookahead.equals(SEMICOLON)) {
       match(SEMICOLON);
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected expression");
     }
   }
 
   private void forSTMT3() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       expression();
     }
   }
 
   private void ifSTMT() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(IF)) {
       match(IF);
@@ -261,14 +336,14 @@ public class Parser {
       match(RIGHT_PAREN);
       statement();
       elseStatement();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected keyword if");
     }
   }
 
   private void elseStatement() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(ELSE)) {
       match(ELSE);
@@ -277,41 +352,53 @@ public class Parser {
   }
 
   private void printSTMT() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(PRINT)) {
       match(PRINT);
       expression();
       match(SEMICOLON);
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected keyword print");
     }
   }
 
   private void returnSTMT() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(RETURN)) {
       match(RETURN);
       returnSTMTOpc();
       match(SEMICOLON);
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected keyword return");
     }
   }
 
   private void returnSTMTOpc() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       expression();
     }
   }
 
   private void whileSTMT() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(WHILE)) {
       match(WHILE);
@@ -319,68 +406,98 @@ public class Parser {
       expression();
       match(RIGHT_PAREN);
       statement();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected keyword while");
     }
   }
 
   private void block() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(LEFT_BRACE)) {
       match(LEFT_BRACE);
       blockDecl();
       match(RIGHT_BRACE);
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected \"{\"");
     }
   }
 
   private void blockDecl() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (
-        lookahead.equals(CLASS)
-            || lookahead.equals(FUNC)
-            || lookahead.equals(VAR)
-            || lookahead.equals(MINUS)
-            || lookahead.equals(PLUS)
-            || lookahead.equals(FOR)
-            || lookahead.equals(IF)
-            || lookahead.equals(PRINT) || lookahead.equals(RETURN) || lookahead.equals(WHILE)
-            || lookahead.equals(LEFT_BRACE) || lookahead.equals(NOT) || lookahead.equals(TRUE) || lookahead.equals(FALSE)
-            || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING)
-            || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)
-    ) {
+    if (lookahead.equals(CLASS) ||
+        lookahead.equals(FUNC) ||
+        lookahead.equals(VAR) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(PLUS) ||
+        lookahead.equals(FOR) ||
+        lookahead.equals(IF) ||
+        lookahead.equals(PRINT) ||
+        lookahead.equals(RETURN) ||
+        lookahead.equals(WHILE) ||
+        lookahead.equals(LEFT_BRACE) ||
+        lookahead.equals(NOT) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       declaration();
       blockDecl();
     }
   }
 
   private void expression() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       assignment();
     }
   }
 
   private void assignment() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       logicOr();
       assignmentOpc();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
     }
   }
 
   private void assignmentOpc() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(ASSIGN)) {
       match(ASSIGN);
@@ -389,19 +506,30 @@ public class Parser {
   }
 
   private void logicOr() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       logicAnd();
       logicOr2();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
     }
   }
 
   private void logicOr2() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(OR)) {
       match(OR);
@@ -411,19 +539,30 @@ public class Parser {
   }
 
   private void logicAnd() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       equality();
       logicAnd2();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
     }
   }
 
   private void logicAnd2() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(AND)) {
       match(AND);
@@ -433,26 +572,36 @@ public class Parser {
   }
 
   private void equality() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       comparison();
       equality2();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
     }
   }
 
   private void equality2() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(NOT_EQUAL)) {
       match(NOT_EQUAL);
       comparison();
       equality2();
-    }
-    else if (lookahead.equals(EQUAL)) {
+    } else if (lookahead.equals(EQUAL)) {
       match(EQUAL);
       comparison();
       equality2();
@@ -460,35 +609,43 @@ public class Parser {
   }
 
   private void comparison() {
-    if (Main.errors) return;
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (Main.errors)
+      return;
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       term();
       comparison2();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
     }
   }
 
   private void comparison2() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(GREATER)) {
       match(GREATER);
       term();
       comparison2();
-    }
-    else if (lookahead.equals(GREATER_EQUAL)) {
+    } else if (lookahead.equals(GREATER_EQUAL)) {
       match(GREATER_EQUAL);
       term();
       comparison2();
-    }
-    else if (lookahead.equals(LESS)) {
+    } else if (lookahead.equals(LESS)) {
       match(LESS);
       term();
       comparison2();
-    }
-    else if (lookahead.equals(LESS_EQUAL)) {
+    } else if (lookahead.equals(LESS_EQUAL)) {
       match(LESS_EQUAL);
       term();
       comparison2();
@@ -496,26 +653,36 @@ public class Parser {
   }
 
   private void term() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       factor();
       term2();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
     }
   }
 
   private void term2() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(MINUS)) {
       match(MINUS);
       factor();
       term2();
-    }
-    else if (lookahead.equals(PLUS)) {
+    } else if (lookahead.equals(PLUS)) {
       match(PLUS);
       factor();
       term2();
@@ -523,26 +690,36 @@ public class Parser {
   }
 
   private void factor() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       unary();
       factor2();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
     }
   }
 
   private void factor2() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(DIVIDE)) {
       match(DIVIDE);
       unary();
       factor2();
-    }
-    else if (lookahead.equals(MULTIPLY)) {
+    } else if (lookahead.equals(MULTIPLY)) {
       match(MULTIPLY);
       unary();
       factor2();
@@ -550,46 +727,60 @@ public class Parser {
   }
 
   private void unary() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(NOT)) {
       match(NOT);
       unary();
-    }
-    else if (lookahead.equals(MINUS)) {
+    } else if (lookahead.equals(MINUS)) {
       match(MINUS);
       unary();
-    }
-    else if (lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    } else if (lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       call();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
     }
   }
 
   private void call() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       primary();
       call2();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
     }
   }
 
   private void call2() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(LEFT_PAREN)) {
       match(LEFT_PAREN);
       argumentsOpc();
       match(RIGHT_PAREN);
       call2();
-    }
-    else if (lookahead.equals(DOT)) {
+    } else if (lookahead.equals(DOT)) {
       match(DOT);
       match(IDENTIFIER);
       call2();
@@ -597,32 +788,39 @@ public class Parser {
   }
 
   private void primary() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(TRUE)) match(TRUE);
-    else if (lookahead.equals(FALSE)) match(FALSE);
-    else if (lookahead.equals(NULL)) match(NULL);
-    else if (lookahead.equals(THIS)) match(THIS);
-    else if (lookahead.equals(NUMBER)) match(NUMBER);
-    else if (lookahead.equals(STRING)) match(STRING);
-    else if (lookahead.equals(IDENTIFIER)) match(IDENTIFIER);
+    if (lookahead.equals(TRUE))
+      match(TRUE);
+    else if (lookahead.equals(FALSE))
+      match(FALSE);
+    else if (lookahead.equals(NULL))
+      match(NULL);
+    else if (lookahead.equals(THIS))
+      match(THIS);
+    else if (lookahead.equals(NUMBER))
+      match(NUMBER);
+    else if (lookahead.equals(STRING))
+      match(STRING);
+    else if (lookahead.equals(IDENTIFIER))
+      match(IDENTIFIER);
     else if (lookahead.equals(LEFT_PAREN)) {
       match(LEFT_PAREN);
       expression();
       match(RIGHT_PAREN);
-    }
-    else if (lookahead.equals(SUPER)) {
+    } else if (lookahead.equals(SUPER)) {
       match(SUPER);
       match(DOT);
       match(IDENTIFIER);
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Unexpected " + lookahead.getLexeme());
     }
   }
 
   private void function() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(IDENTIFIER)) {
       match(IDENTIFIER);
@@ -630,14 +828,14 @@ public class Parser {
       parametersOpc();
       match(RIGHT_PAREN);
       block();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected identifier");
     }
   }
 
   private void functions() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(FUNC)) {
       funcDecl();
@@ -646,7 +844,8 @@ public class Parser {
   }
 
   private void parametersOpc() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(IDENTIFIER)) {
       parameters();
@@ -654,19 +853,20 @@ public class Parser {
   }
 
   private void parameters() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(IDENTIFIER)) {
       match(IDENTIFIER);
       parameters2();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected identifier");
     }
   }
 
   private void parameters2() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(COMMA)) {
       match(COMMA);
@@ -676,27 +876,49 @@ public class Parser {
   }
 
   private void argumentsOpc() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       arguments();
     }
   }
 
   private void arguments() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
-    if (lookahead.equals(NOT) || lookahead.equals(MINUS) || lookahead.equals(TRUE) || lookahead.equals(FALSE) || lookahead.equals(NULL) || lookahead.equals(THIS) || lookahead.equals(NUMBER) || lookahead.equals(STRING) || lookahead.equals(IDENTIFIER) || lookahead.equals(LEFT_PAREN) || lookahead.equals(SUPER)) {
+    if (lookahead.equals(NOT) ||
+        lookahead.equals(MINUS) ||
+        lookahead.equals(TRUE) ||
+        lookahead.equals(FALSE) ||
+        lookahead.equals(NULL) ||
+        lookahead.equals(THIS) ||
+        lookahead.equals(NUMBER) ||
+        lookahead.equals(STRING) ||
+        lookahead.equals(IDENTIFIER) ||
+        lookahead.equals(LEFT_PAREN) ||
+        lookahead.equals(SUPER)) {
       expression();
       arguments2();
-    }
-    else {
+    } else {
       Main.error(lookahead.getNumberLine(), "Expected arguments");
     }
   }
 
   private void arguments2() {
-    if (Main.errors) return;
+    if (Main.errors)
+      return;
 
     if (lookahead.equals(COMMA)) {
       match(COMMA);
@@ -706,20 +928,14 @@ public class Parser {
   }
 
   private void match(Token terminal) {
-    if(Main.errors) return;
+    if (Main.errors)
+      return;
     if (lookahead.equals(terminal)) {
       i++;
       lookahead = tokens.get(i);
-    }
-    else {
+    } else {
       Main.errors = true;
       Main.error(lookahead.getNumberLine(), "Expected " + terminal.getLexeme());
     }
   }
 }
-
-
-
-
-
-

@@ -12,7 +12,6 @@ public class Scanner {
   private final StringBuilder lexeme;
 
   static {
-    // Set language keywords
     keywords = new HashMap<>();
     keywords.put("else", TokenType.ELSE);
     keywords.put("class", TokenType.CLASS);
@@ -54,98 +53,77 @@ public class Scanner {
             if (currentCharacter == '<') {
               state = 1;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '=') {
+            } else if (currentCharacter == '=') {
               state = 2;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '>') {
+            } else if (currentCharacter == '>') {
               state = 3;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '!') {
+            } else if (currentCharacter == '!') {
               state = 4;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '(') {
+            } else if (currentCharacter == '(') {
               state = 5;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == ')') {
+            } else if (currentCharacter == ')') {
               state = 6;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '[') {
+            } else if (currentCharacter == '[') {
               state = 7;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == ']') {
+            } else if (currentCharacter == ']') {
               state = 8;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '{') {
+            } else if (currentCharacter == '{') {
               state = 9;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '}') {
+            } else if (currentCharacter == '}') {
               state = 10;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '"') {
+            } else if (currentCharacter == '"') {
               state = 11;
               lexeme.append(currentCharacter);
-            }
-            else if (Character.isDigit(currentCharacter)) {
+            } else if (Character.isDigit(currentCharacter)) {
               state = 12;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '+') {
+            } else if (currentCharacter == '+') {
               state = 18;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '-') {
+            } else if (currentCharacter == '-') {
               state = 19;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '*') {
+            } else if (currentCharacter == '*') {
               state = 20;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '/') {
+            } else if (currentCharacter == '/') {
               state = 21;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '%') {
+            } else if (currentCharacter == '%') {
               state = 22;
               lexeme.append(currentCharacter);
-            }
-            else if (Character.isLetter(currentCharacter)) {
+            } else if (Character.isLetter(currentCharacter)) {
               state = 25;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == '_') {
+            } else if (currentCharacter == '_') {
               state = 26;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == ' ' || currentCharacter == '\t' || currentCharacter == '\n'
-                || currentCharacter == '\r') {
+            } else if (currentCharacter == ' ' ||
+                currentCharacter == '\t' ||
+                currentCharacter == '\n' ||
+                currentCharacter == '\r') {
               state = 27;
               lexeme.append(currentCharacter);
-            }
-            else if (currentCharacter == ';') {
+            } else if (currentCharacter == ';') {
               lexeme.append(currentCharacter);
               addToken(TokenType.SEMICOLON, lexeme.toString());
-            }
-            else if (currentCharacter == ',') {
+            } else if (currentCharacter == ',') {
               lexeme.append(currentCharacter);
               addToken(TokenType.COMMA, lexeme.toString());
-            }
-            else if (currentCharacter == '.') {
+            } else if (currentCharacter == '.') {
               lexeme.append(currentCharacter);
               addToken(TokenType.DOT, lexeme.toString());
-            }
-            else {
-              Main.error(numberLine,"Unable to parse: " + currentCharacter);
+            } else {
+              Main.error(numberLine, "Unable to parse: " + currentCharacter);
             }
           }
           break;
@@ -156,8 +134,7 @@ public class Scanner {
           if (currentCharacter == '=') {
             lexeme.append(currentCharacter);
             addToken(TokenType.LESS_EQUAL, lexeme.toString());
-          }
-          else {
+          } else {
             i--;
             addToken(TokenType.LESS, lexeme.toString());
           }
@@ -167,8 +144,7 @@ public class Scanner {
           if (currentCharacter == '=') {
             lexeme.append(currentCharacter);
             addToken(TokenType.EQUAL, lexeme.toString());
-          }
-          else {
+          } else {
             i--;
             addToken(TokenType.ASSIGN, lexeme.toString());
           }
@@ -178,8 +154,7 @@ public class Scanner {
           if (currentCharacter == '=') {
             lexeme.append(currentCharacter);
             addToken(TokenType.GREATER_EQUAL, lexeme.toString());
-          }
-          else {
+          } else {
             i--;
             addToken(TokenType.GREATER, lexeme.toString());
           }
@@ -189,8 +164,7 @@ public class Scanner {
           if (currentCharacter == '=') {
             lexeme.append(currentCharacter);
             addToken(TokenType.NOT_EQUAL, lexeme.toString());
-          }
-          else {
+          } else {
             i--;
             addToken(TokenType.NOT, lexeme.toString());
           }
@@ -198,56 +172,63 @@ public class Scanner {
         // -------------------------------------------------------------------------------------------------------------
         // Paréntesis y Corchetes y llaves
         case 5:
-          i--; state = 0; addToken(TokenType.LEFT_PAREN, lexeme.toString());
+          i--;
+          state = 0;
+          addToken(TokenType.LEFT_PAREN, lexeme.toString());
           break;
         case 6:
-          i--; state = 0; addToken(TokenType.RIGHT_PAREN, lexeme.toString());
+          i--;
+          state = 0;
+          addToken(TokenType.RIGHT_PAREN, lexeme.toString());
           break;
         case 7:
-          i--; state = 0; addToken(TokenType.LEFT_CORCH, lexeme.toString());
+          i--;
+          state = 0;
+          addToken(TokenType.LEFT_CORCH, lexeme.toString());
           break;
         case 8:
-          i--; state = 0; addToken(TokenType.RIGHT_CORCH, lexeme.toString());
+          i--;
+          state = 0;
+          addToken(TokenType.RIGHT_CORCH, lexeme.toString());
           break;
         case 9:
-          i--; state = 0; addToken(TokenType.LEFT_BRACE, lexeme.toString());
+          i--;
+          state = 0;
+          addToken(TokenType.LEFT_BRACE, lexeme.toString());
           break;
         case 10:
-          i--; state = 0; addToken(TokenType.RIGHT_BRACE, lexeme.toString());
+          i--;
+          state = 0;
+          addToken(TokenType.RIGHT_BRACE, lexeme.toString());
           break;
         // Strings
         case 11:
           if (currentCharacter != '"' && currentCharacter != '\0') {
             lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '\0') {
-            Main.error(numberLine,"Unable to parse: " + lexeme);
-          }
-          else {
+          } else if (currentCharacter == '\0') {
+            Main.error(numberLine, "Unable to parse: " + lexeme);
+          } else {
             state = 0;
             lexeme.append(currentCharacter);
             addToken(
                 TokenType.STRING,
                 lexeme.toString(),
-                lexeme.substring(1, lexeme.length() - 1)
-            );
+                lexeme.substring(1, lexeme.length() - 1));
           }
           break;
-        //Numbers
+        // Numbers
         case 12:
           if (currentCharacter >= '0' && currentCharacter <= '9') {
             lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '.') {
+          } else if (currentCharacter == '.') {
             state = 13;
             lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == 'e' || currentCharacter == 'E') {
+          } else if (currentCharacter == 'e' || currentCharacter == 'E') {
             state = 15;
             lexeme.append(currentCharacter);
-          }
-          else {
-            i--; state = 0;
+          } else {
+            i--;
+            state = 0;
             addToken(TokenType.NUMBER, lexeme.toString(), Integer.parseInt(lexeme.toString()));
           }
           break;
@@ -255,21 +236,19 @@ public class Scanner {
           if (currentCharacter >= '0' && currentCharacter <= '9') {
             state = 14;
             lexeme.append(currentCharacter);
-          }
-          else {
-            Main.error(numberLine,"Unable to parse: " + lexeme);
+          } else {
+            Main.error(numberLine, "Unable to parse: " + lexeme);
           }
           break;
         case 14:
           if (currentCharacter >= '0' && currentCharacter <= '9') {
             lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == 'e' || currentCharacter == 'E') {
+          } else if (currentCharacter == 'e' || currentCharacter == 'E') {
             state = 15;
             lexeme.append(currentCharacter);
-          }
-          else {
-            i--; state = 0;
+          } else {
+            i--;
+            state = 0;
             addToken(TokenType.NUMBER, lexeme.toString(), Float.parseFloat(lexeme.toString()));
           }
           break;
@@ -277,30 +256,28 @@ public class Scanner {
           if (currentCharacter >= '0' && currentCharacter <= '9') {
             state = 17;
             lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '+' || currentCharacter == '-') {
+          } else if (currentCharacter == '+' || currentCharacter == '-') {
             state = 16;
             lexeme.append(currentCharacter);
-          }
-          else {
-            Main.error(numberLine,"Unable to parse: " + lexeme);
+          } else {
+            Main.error(numberLine, "Unable to parse: " + lexeme);
           }
           break;
         case 16:
           if (currentCharacter >= '0' && currentCharacter <= '9') {
             state = 17;
             lexeme.append(currentCharacter);
-          }
-          else {
+          } else {
             throw new RuntimeException("Unable to parse: " + lexeme);
           }
           break;
         case 17:
           if (currentCharacter >= '0' && currentCharacter <= '9') {
             lexeme.append(currentCharacter);
-          }
-          else {
-            i--; state = 0; addToken(TokenType.NUMBER, lexeme.toString(), Double.parseDouble(lexeme.toString()));
+          } else {
+            i--;
+            state = 0;
+            addToken(TokenType.NUMBER, lexeme.toString(), Double.parseDouble(lexeme.toString()));
           }
           break;
         // Arithmetic operators
@@ -309,9 +286,9 @@ public class Scanner {
           if (currentCharacter == '=') {
             lexeme.append(currentCharacter);
             addToken(TokenType.PLUS_EQUAL, lexeme.toString());
-          }
-          else {
-            i--; addToken(TokenType.PLUS, lexeme.toString());
+          } else {
+            i--;
+            addToken(TokenType.PLUS, lexeme.toString());
           }
           break;
         case 19:
@@ -319,9 +296,9 @@ public class Scanner {
           if (currentCharacter == '=') {
             lexeme.append(currentCharacter);
             addToken(TokenType.MINUS_EQUAL, lexeme.toString());
-          }
-          else {
-            i--; addToken(TokenType.MINUS, lexeme.toString());
+          } else {
+            i--;
+            addToken(TokenType.MINUS, lexeme.toString());
           }
           break;
         case 20:
@@ -329,9 +306,9 @@ public class Scanner {
           if (currentCharacter == '=') {
             lexeme.append(currentCharacter);
             addToken(TokenType.MULTIPLY_EQUAL, lexeme.toString());
-          }
-          else {
-            i--; addToken(TokenType.MULTIPLY, lexeme.toString());
+          } else {
+            i--;
+            addToken(TokenType.MULTIPLY, lexeme.toString());
           }
           break;
         case 21:
@@ -339,17 +316,15 @@ public class Scanner {
           if (currentCharacter == '=') {
             lexeme.append(currentCharacter);
             addToken(TokenType.DIVIDE_EQUAL, lexeme.toString());
-          }
-          else if (currentCharacter == '/') {
+          } else if (currentCharacter == '/') {
             state = 28;
             lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '*') {
+          } else if (currentCharacter == '*') {
             state = 29;
             lexeme.append(currentCharacter);
-          }
-          else {
-            i--; addToken(TokenType.DIVIDE, lexeme.toString());
+          } else {
+            i--;
+            addToken(TokenType.DIVIDE, lexeme.toString());
           }
           break;
         case 22:
@@ -357,52 +332,55 @@ public class Scanner {
           if (currentCharacter == '=') {
             lexeme.append(currentCharacter);
             addToken(TokenType.MOD_EQUAL, lexeme.toString());
-          }
-          else {
-            i--; addToken(TokenType.MOD, lexeme.toString());
+          } else {
+            i--;
+            addToken(TokenType.MOD, lexeme.toString());
           }
           break;
         // Identifiers
         case 25:
-          if (
-              currentCharacter >= 'a' && currentCharacter <= 'z' ||
-                  currentCharacter >= 'A' && currentCharacter <= 'Z' ||
-                  currentCharacter >= '0' && currentCharacter <= '9' ||
-                  currentCharacter == '_'
-          ) {
+          if (currentCharacter >= 'a' &&
+              currentCharacter <= 'z' ||
+              currentCharacter >= 'A' &&
+                  currentCharacter <= 'Z'
+              ||
+              currentCharacter >= '0' &&
+                  currentCharacter <= '9'
+              ||
+              currentCharacter == '_') {
             lexeme.append(currentCharacter);
-          }
-          else {
-            i--; state = 0;
+          } else {
+            i--;
+            state = 0;
             addToken(TokenType.IDENTIFIER, lexeme.toString());
           }
           break;
         case 26:
-          if (
-              currentCharacter >= 'a' && currentCharacter <= 'z' ||
-                  currentCharacter >= 'A' && currentCharacter <= 'Z' ||
-                  currentCharacter >= '0' && currentCharacter <= '9'
-          ) {
+          if (currentCharacter >= 'a' &&
+              currentCharacter <= 'z' ||
+              currentCharacter >= 'A' &&
+                  currentCharacter <= 'Z'
+              ||
+              currentCharacter >= '0' &&
+                  currentCharacter <= '9') {
             state = 25;
             lexeme.append(currentCharacter);
-          }
-          else if (currentCharacter == '_') {
+          } else if (currentCharacter == '_') {
             lexeme.append(currentCharacter);
-          }
-          else {
-            Main.error(numberLine,"Unable to parse: " + lexeme);
+          } else {
+            Main.error(numberLine, "Unable to parse: " + lexeme);
           }
           break;
         // Delimiters
         case 27:
-          if (
-              currentCharacter == ' ' || currentCharacter == '\t' || currentCharacter == '\n'
-                  || currentCharacter == '\r'
-          ) {
+          if (currentCharacter == ' ' ||
+              currentCharacter == '\t' ||
+              currentCharacter == '\n' ||
+              currentCharacter == '\r') {
             lexeme.append(currentCharacter);
-          }
-          else {
-            i--; state = 0;
+          } else {
+            i--;
+            state = 0;
             lexeme.delete(0, lexeme.length());
           }
           break;
@@ -410,16 +388,16 @@ public class Scanner {
         case 28:
           if (currentCharacter != '\n') {
             lexeme.append(currentCharacter);
-          }
-          else {
-            i--; state = 0; lexeme.delete(0, lexeme.length());
+          } else {
+            i--;
+            state = 0;
+            lexeme.delete(0, lexeme.length());
           }
           break;
         case 29:
           if (currentCharacter == '*') {
             state = 30;
-          }
-          else {
+          } else {
             lexeme.append(currentCharacter);
           }
           break;
@@ -430,10 +408,12 @@ public class Scanner {
           lexeme.append(currentCharacter);
           break;
         case 31:
-          i--; state = 0; lexeme.delete(0, lexeme.length());
+          i--;
+          state = 0;
+          lexeme.delete(0, lexeme.length());
           break;
         default:
-          Main.error(numberLine,"Unable to parse: " + currentCharacter);
+          Main.error(numberLine, "Unable to parse: " + currentCharacter);
       }
     }
     tokens.add(new Token(TokenType.EOF, "", null, numberLine));

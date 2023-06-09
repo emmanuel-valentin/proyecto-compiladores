@@ -1,23 +1,19 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
 public class Main {
-
   public static boolean errors = false;
+
   public static void main(String[] args) throws IOException {
     if (args.length > 1) {
-      System.out.println("Correct use");
       System.exit(64);
-    }
-    else if (args.length == 1) {
+    } else if (args.length == 1) {
       runFile(args[0]);
-    }
-    else {
+    } else {
       runPrompt();
     }
   }
@@ -34,7 +30,7 @@ public class Main {
     InputStreamReader input = new InputStreamReader(System.in);
     BufferedReader reader = new BufferedReader(input);
 
-    for(;;) {
+    for (;;) {
       System.out.print("> ");
       String line = reader.readLine();
       if (line == null) {
@@ -51,7 +47,6 @@ public class Main {
     Parser parser = new Parser(tokens);
 
     parser.parse();
-    // for (Token token : tokens) System.out.println(token);
   }
 
   public static void error(int numberLine, String message) {
@@ -60,8 +55,7 @@ public class Main {
 
   private static void report(int numberLine, String where, String message) {
     System.err.println(
-        "[line " + numberLine + "] Error" + where + ": " + message
-    );
+        "[line " + numberLine + "] Error" + where + ": " + message);
     errors = true;
   }
 }
