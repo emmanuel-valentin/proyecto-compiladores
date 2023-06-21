@@ -44,10 +44,29 @@ public class Main {
   private static void run(String source) {
     Scanner scanner = new Scanner(source);
     List<Token> tokens = scanner.scanTokens();
-    Parser parser = new Parser(tokens);
 
-    parser.parse();
+    /*Para este ejemplo no vamos a utilizar un parser
+    Parser parser = new Parser(tokens);
+    parser.parse();*/
+
+        GeneradorPostfija gpf = new GeneradorPostfija(tokens);
+        List<Token> postfija = gpf.convertir();
+
+        /*for(Token token : postfija){
+            System.out.println(token);
+        }*/
+
+        GeneradorAST gast = new GeneradorAST(postfija);
+        Arbol programa = gast.generarAST();
+        programa.recorrer();
+    
   }
+
+      /*
+    El método error se puede usar desde las distintas clases
+    para reportar los errores:
+    Interprete.error(....);
+     */
 
   public static void error(int numberLine, String message) {
     report(numberLine, "", message);

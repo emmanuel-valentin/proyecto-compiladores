@@ -1,8 +1,9 @@
 public class Token {
-  final private TokenType type;
+  final TokenType type;
   final private String lexeme;
-  final private Object literal;
+  final Object literal;
   final private int numberLine;
+  public TokenType t;
 
   public Token(TokenType type, String lexeme, Object literal, int numberLine) {
     this.type = type;
@@ -43,4 +44,95 @@ public class Token {
   public String toString() {
     return "Line[" + numberLine + "]: " + type + " " + lexeme + " " + literal;
   }
+
+   // Métodos auxiliares
+   public boolean isOperand(){
+    switch (this.type){
+        case IDENTIFIER:
+        case NUMBER:
+            return true;
+        default:
+            return false;
+    }
 }
+
+public boolean isOperator(){
+    switch (this.type){
+        case PLUS:
+        case MINUS:
+        case MULTIPLY:
+        case DIVIDE:
+        case EQUAL:
+        case GREATER:
+        case GREATER_EQUAL:
+            return true;
+        default:
+            return false;
+    }
+}
+
+public boolean isKeyword(){
+    switch (this.type){
+        case VAR:
+        case IF:
+        case PRINT:
+        case ELSE:
+            return true;
+        default:
+            return false;
+    }
+}
+
+public boolean isControlStructure(){
+    switch (this.type){
+        case IF:
+        case ELSE:
+            return true;
+        default:
+            return false;
+    }
+}
+
+public boolean greater_equalPrecedence(Token t){
+    return this.getPrecedence() >= t.getPrecedence();
+}
+
+
+private int getPrecedence(){
+    switch (this.type){
+        case MULTIPLY:
+        case DIVIDE:
+            return 3;
+        case PLUS:
+        case MINUS:
+            return 2;
+        case EQUAL:
+            return 1;
+        case GREATER:
+        case GREATER_EQUAL:
+            return 1;
+      default:
+        break;
+    }
+
+    return 0;
+}
+
+public int aridad(){
+    switch (this.type) {
+        case MULTIPLY:
+        case DIVIDE:
+        case PLUS:
+        case MINUS:
+        case EQUAL:
+        case GREATER:
+        case GREATER_EQUAL:
+            return 2;
+      default:
+        break;
+    }
+    return 0;
+}
+}
+
+
