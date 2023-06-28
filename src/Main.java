@@ -31,7 +31,7 @@ public class Main {
     BufferedReader reader = new BufferedReader(input);
 
     for (;;) {
-      System.out.print("> ");
+      System.out.print("\n> ");
       String line = reader.readLine();
       if (line == null) {
         break;
@@ -45,20 +45,15 @@ public class Main {
     Scanner scanner = new Scanner(source);
     List<Token> tokens = scanner.scanTokens();
 
-    /*Para este ejemplo no vamos a utilizar un parser
     Parser parser = new Parser(tokens);
-    parser.parse();*/
+    parser.parse();
 
-        GeneradorPostfija gpf = new GeneradorPostfija(tokens);
-        List<Token> postfija = gpf.convertir();
+    GeneradorPostfija gpf = new GeneradorPostfija(tokens);
+    List<Token> postfija = gpf.convertir();
 
-        /*for(Token token : postfija){
-            System.out.println(token);
-        }*/
-
-        GeneradorAST gast = new GeneradorAST(postfija);
-        Arbol programa = gast.generarAST();
-        programa.recorrer();
+    GeneradorAST gast = new GeneradorAST(postfija);
+    Arbol programa = gast.generarAST();
+    programa.recorrer();
     
   }
 

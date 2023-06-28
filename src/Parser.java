@@ -57,8 +57,6 @@ public class Parser {
 
     if (!Main.errors && !lookahead.equals(EOF)) {
       Main.error(lookahead.getNumberLine(), "Unexpected token " + lookahead.getLexeme());
-    } else if (!Main.errors && lookahead.equals(EOF)) {
-      System.out.println("Parsing finished successfully");
     }
   }
 

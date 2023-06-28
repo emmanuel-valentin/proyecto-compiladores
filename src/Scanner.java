@@ -229,7 +229,7 @@ public class Scanner {
           } else {
             i--;
             state = 0;
-            addToken(TokenType.NUMBER, lexeme.toString(), Integer.parseInt(lexeme.toString()));
+            addToken(TokenType.NUMBER, lexeme.toString(), Double.parseDouble(lexeme.toString()));
           }
           break;
         case 13:
@@ -249,7 +249,7 @@ public class Scanner {
           } else {
             i--;
             state = 0;
-            addToken(TokenType.NUMBER, lexeme.toString(), Float.parseFloat(lexeme.toString()));
+            addToken(TokenType.NUMBER, lexeme.toString(), Double.parseDouble(lexeme.toString()));
           }
           break;
         case 15:
